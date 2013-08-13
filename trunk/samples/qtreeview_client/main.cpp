@@ -36,8 +36,8 @@
 #include "mainwindow.hpp"
 
 // Qt include.
-#include <QtGui/QApplication>
-#include <QtCore/QMetaType>
+#include <QApplication>
+#include <QMetaType>
 
 
 int

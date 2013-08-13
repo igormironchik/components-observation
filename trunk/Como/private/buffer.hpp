@@ -32,7 +32,7 @@
 #define COMO__BUFFER_HPP__INCLUDED
 
 // Qt include.
-#include <QtCore/QByteArray>
+#include <QByteArray>
 
 
 namespace Como {

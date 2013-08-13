@@ -33,8 +33,8 @@
 #include "model.hpp"
 
 // Qt include.
-#include <QtGui/QPainter>
-#include <QtGui/QHeaderView>
+#include <QPainter>
+#include <QHeaderView>
 
 
 //

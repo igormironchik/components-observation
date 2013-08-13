@@ -38,8 +38,8 @@
 #include <Como/Source>
 
 // Qt include.
-#include <QtCore/QCoreApplication>
-#include <QtCore/QMetaType>
+#include <QCoreApplication>
+#include <QMetaType>
 
 
 int main( int argc, char ** argv )

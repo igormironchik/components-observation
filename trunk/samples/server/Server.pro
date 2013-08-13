@@ -6,6 +6,7 @@ DEPENDPATH += . ../..
 INCLUDEPATH += . ../..
 CONFIG += console qt
 QT += network
+QT -= gui
 LIBS += -L../../lib -lComo
 
 HEADERS += first_thread.hpp \

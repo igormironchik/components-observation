@@ -32,8 +32,8 @@
 #define COMO__CLIENT_SOCKET_HPP__INCLUDED
 
 // Qt include.
-#include <QtNetwork/QTcpSocket>
-#include <QtCore/QScopedPointer>
+#include <QTcpSocket>
+#include <QScopedPointer>
 
 
 namespace Como {

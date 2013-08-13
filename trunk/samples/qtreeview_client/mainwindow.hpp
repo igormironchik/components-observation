@@ -32,8 +32,8 @@
 #define COMO__SAMPLES__QLISTVIEW_CLIENT__MAINWINDOW_HPP__INCLUDED
 
 // Qt include.
-#include <QtGui/QMainWindow>
-#include <QtCore/QScopedPointer>
+#include <QMainWindow>
+#include <QScopedPointer>
 
 
 namespace Como {

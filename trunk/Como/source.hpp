@@ -32,11 +32,11 @@
 #define COMO__SOURCE_HPP__INCLUDED
 
 // Qt include.
-#include <QtCore/QDateTime>
-#include <QtCore/QString>
-#include <QtCore/QVariant>
-#include <QtCore/QObject>
-#include <QtCore/QMetaType>
+#include <QDateTime>
+#include <QString>
+#include <QVariant>
+#include <QObject>
+#include <QMetaType>
 
 
 namespace Como {

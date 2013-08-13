@@ -35,8 +35,8 @@
 #include <Como/Source>
 
 // Qt include.
-#include <QtCore/QSharedPointer>
-#include <QtCore/QByteArray>
+#include <QSharedPointer>
+#include <QByteArray>
 
 
 namespace Como {

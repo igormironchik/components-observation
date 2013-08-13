@@ -33,7 +33,7 @@
 #include <Como/private/Messages>
 
 // Qt include.
-#include <QtCore/QDataStream>
+#include <QDataStream>
 
 
 namespace Como {

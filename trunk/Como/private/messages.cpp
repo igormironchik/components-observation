@@ -31,6 +31,9 @@
 // Como include.
 #include <Como/private/Messages>
 
+// Qt include.
+#include <QDataStream>
+
 
 namespace Como {
 
