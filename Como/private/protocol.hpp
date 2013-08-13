@@ -32,8 +32,8 @@
 #define COMO__PROTOCOL_HPP__INCLUDED
 
 // Qt include.
-#include <QtCore/QSharedPointer>
-#include <QtCore/QString>
+#include <QSharedPointer>
+#include <QString>
 
 // C++ include.
 #include <stdexcept>

@@ -5,6 +5,8 @@ DESTDIR = ../lib
 DEPENDPATH += . private
 INCLUDEPATH += . ..
 CONFIG += staticlib
+QT -= gui
+QT += network
 
 HEADERS += client_socket.hpp \
            server_socket.hpp \

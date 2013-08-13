@@ -34,11 +34,11 @@
 #include <Como/Source>
 
 // Qt include.
-#include <QtCore/QMutexLocker>
-#include <QtCore/QList>
-#include <QtCore/QMutex>
-#include <QtCore/QEvent>
-#include <QtCore/QCoreApplication>
+#include <QMutexLocker>
+#include <QList>
+#include <QMutex>
+#include <QEvent>
+#include <QCoreApplication>
 
 
 namespace Como {

@@ -35,7 +35,7 @@
 #include <Como/Source>
 
 // Qt include.
-#include <QtCore/QTimer>
+#include <QTimer>
 
 
 //

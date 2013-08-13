@@ -32,8 +32,8 @@
 #include "model.hpp"
 
 // Qt include.
-#include <QtCore/QString>
-#include <QtCore/QList>
+#include <QString>
+#include <QList>
 
 
 //

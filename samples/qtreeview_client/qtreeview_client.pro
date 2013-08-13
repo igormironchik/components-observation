@@ -5,7 +5,7 @@ DESTDIR = ../..
 DEPENDPATH += . ../..
 INCLUDEPATH += . ../..
 CONFIG += windows qt
-QT += network gui
+QT += network gui widgets
 LIBS += -L../../lib -lComo
 
 HEADERS += treeview.hpp \

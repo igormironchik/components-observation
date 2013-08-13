@@ -32,9 +32,9 @@
 #define COMO__SAMPLES__QLISTVIEW_CLIENT__MODEL_HPP__INCLUDED
 
 // Qt include.
-#include <QtCore/QAbstractTableModel>
-#include <QtCore/QScopedPointer>
-#include <QtGui/QColor>
+#include <QAbstractTableModel>
+#include <QScopedPointer>
+#include <QColor>
 
 // Como include.
 #include <Como/ClientSocket>

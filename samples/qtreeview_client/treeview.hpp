@@ -32,8 +32,8 @@
 #define COMO__SAMPLES__QLISTVIEW_CLIENT__TREEVIEW_HPP__INCLUDED
 
 // Qt include.
-#include <QtGui/QTreeView>
-#include <QtCore/QScopedPointer>
+#include <QTreeView>
+#include <QScopedPointer>
 
 
 class Model;

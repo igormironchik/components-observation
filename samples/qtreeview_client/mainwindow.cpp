@@ -34,11 +34,11 @@
 #include "model.hpp"
 
 // Qt include.
-#include <QtGui/QMenuBar>
-#include <QtGui/QMenu>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtNetwork/QHostAddress>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QApplication>
+#include <QHostAddress>
 
 // Como include.
 #include <Como/ClientSocket>

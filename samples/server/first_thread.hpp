@@ -32,9 +32,9 @@
 #define COMO__SAMPLES__SERVER__FIRST_THREAD_HPP__INCLUDED
 
 // Qt include.
-#include <QtCore/QThread>
-#include <QtCore/QScopedPointer>
-#include <QtCore/QObject>
+#include <QThread>
+#include <QScopedPointer>
+#include <QObject>
 
 
 namespace Como {
