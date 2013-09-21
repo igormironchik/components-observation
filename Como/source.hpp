@@ -75,8 +75,18 @@ public:
 		String = 0x01,
 		//! Source with integer value.
 		Int = 0x02,
+		//! Source with unsigned integer value.
+		UInt = 0x03,
+		//! Source with long long value.
+		LongLong = 0x04,
+		//! Source with unsigned long long value.
+		ULongLong = 0x05,
 		//! Source with double value.
-		Double = 0x03
+		Double = 0x06,
+		//! Source with date and time.
+		DateTime = 0x07,
+		//! Source with time.
+		Time = 0x08
 	}; /* enum Type */
 
 	//! Type of the source will be Int.
