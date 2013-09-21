@@ -18,11 +18,11 @@
 <a name="l00032"></a>00032 <span class="preprocessor"></span><span class="preprocessor">#define COMO__SOURCE_HPP__INCLUDED</span>
 <a name="l00033"></a>00033 <span class="preprocessor"></span>
 <a name="l00034"></a>00034 <span class="comment">// Qt include.</span>
-<a name="l00035"></a>00035 <span class="preprocessor">#include &lt;QtCore/QDateTime&gt;</span>
-<a name="l00036"></a>00036 <span class="preprocessor">#include &lt;QtCore/QString&gt;</span>
-<a name="l00037"></a>00037 <span class="preprocessor">#include &lt;QtCore/QVariant&gt;</span>
-<a name="l00038"></a>00038 <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
-<a name="l00039"></a>00039 <span class="preprocessor">#include &lt;QtCore/QMetaType&gt;</span>
+<a name="l00035"></a>00035 <span class="preprocessor">#include &lt;QDateTime&gt;</span>
+<a name="l00036"></a>00036 <span class="preprocessor">#include &lt;QString&gt;</span>
+<a name="l00037"></a>00037 <span class="preprocessor">#include &lt;QVariant&gt;</span>
+<a name="l00038"></a>00038 <span class="preprocessor">#include &lt;QObject&gt;</span>
+<a name="l00039"></a>00039 <span class="preprocessor">#include &lt;QMetaType&gt;</span>
 <a name="l00040"></a>00040 
 <a name="l00041"></a>00041 
 <a name="l00042"></a>00042 <span class="keyword">namespace </span>Como {
@@ -46,74 +46,79 @@
 <a name="l00073"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf">00073</a>     <span class="keyword">enum</span> <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> {
 <a name="l00075"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf25ad5fa97b905db31720638d7a4e2907">00075</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf25ad5fa97b905db31720638d7a4e2907" title="Source with string value.">String</a> = 0x01,
 <a name="l00077"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf09484579e9213bcd4b3ea7845374b386">00077</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf09484579e9213bcd4b3ea7845374b386" title="Source with integer value.">Int</a> = 0x02,
-<a name="l00079"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf0526390fcdfa7844af4127a1e74903b6">00079</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf0526390fcdfa7844af4127a1e74903b6" title="Source with double value.">Double</a> = 0x03
-<a name="l00080"></a>00080     }; <span class="comment">/* enum Type */</span>
-<a name="l00081"></a>00081 
-<a name="l00083"></a>00083     <a class="code" href="class_como_1_1_source.html#ed762e69fdc70006add080c73192e854" title="Type of the source will be Int.">Source</a>( QObject * parent = 0 );
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085     <a class="code" href="class_como_1_1_source.html#ed762e69fdc70006add080c73192e854" title="Type of the source will be Int.">Source</a>(
-<a name="l00087"></a>00087         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> <a class="code" href="class_como_1_1_source.html#1a4b11b6d59d73ef5985b1fd82e4a049">type</a>,
-<a name="l00089"></a>00089         <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#3652e6d548e46d7f89b8d97dbe606fac">name</a>,
-<a name="l00091"></a>00091         <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#561b3e89cc45d6dfb6194926e7852ca1">typeName</a>,
-<a name="l00093"></a>00093         <span class="keyword">const</span> QVariant &amp; <a class="code" href="class_como_1_1_source.html#ca4eeb6d628b093519d34c59af6f4d56">value</a>,
-<a name="l00095"></a>00095         <span class="keyword">const</span> QString &amp; desc,
-<a name="l00100"></a>00100         <a class="code" href="class_como_1_1_server_socket.html" title="Server socket.">ServerSocket</a> * <a class="code" href="class_como_1_1_source.html#6d5f81274042f664b4e02f9b7bd4033e">serverSocket</a> = 0,
-<a name="l00102"></a>00102         QObject * parent = 0 );
-<a name="l00103"></a>00103 
-<a name="l00104"></a>00104     <span class="keyword">virtual</span> ~<a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a>();
-<a name="l00105"></a>00105 
-<a name="l00110"></a>00110     <a class="code" href="class_como_1_1_source.html#ed762e69fdc70006add080c73192e854" title="Type of the source will be Int.">Source</a>( <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; other );
-<a name="l00111"></a>00111 
-<a name="l00116"></a>00116     <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; <a class="code" href="class_como_1_1_source.html#0d05c08474b8884572de266d72e07c0b" title="Be careful, m_serverSocket will not copied and QObject::parent will not change.">operator = </a>( <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; other );
-<a name="l00117"></a>00117 
-<a name="l00125"></a>00125     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8b6732e192e82957d327bf9c47c16289" title="Init server socket with this source.">initSource</a>();
-<a name="l00126"></a>00126 
-<a name="l00135"></a>00135     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#284a1988706a42d2fec29e4802a99475" title="Deinit server socket with this source.">deinitSource</a>();
+<a name="l00079"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf5fcaa5cbe7352baa2d6e7809c0452528">00079</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf5fcaa5cbe7352baa2d6e7809c0452528" title="Source with unsigned integer value.">UInt</a> = 0x03,
+<a name="l00081"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aafd0d7703f940028294f41077d6bb737e6">00081</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aafd0d7703f940028294f41077d6bb737e6" title="Source with long long value.">LongLong</a> = 0x04,
+<a name="l00083"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf2785999ed6de33d86b22565dbea30389">00083</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf2785999ed6de33d86b22565dbea30389" title="Source with unsigned long long value.">ULongLong</a> = 0x05,
+<a name="l00085"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf0526390fcdfa7844af4127a1e74903b6">00085</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf0526390fcdfa7844af4127a1e74903b6" title="Source with double value.">Double</a> = 0x06,
+<a name="l00087"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf449de2a497bfd953165a09cdd8df1b10">00087</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf449de2a497bfd953165a09cdd8df1b10" title="Source with date and time.">DateTime</a> = 0x07,
+<a name="l00089"></a><a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aafed9e23d6cedb4a0ada9bb7b835127f23">00089</a>         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aafed9e23d6cedb4a0ada9bb7b835127f23" title="Source with time.">Time</a> = 0x08
+<a name="l00090"></a>00090     }; <span class="comment">/* enum Type */</span>
+<a name="l00091"></a>00091 
+<a name="l00093"></a>00093     <a class="code" href="class_como_1_1_source.html#ed762e69fdc70006add080c73192e854" title="Type of the source will be Int.">Source</a>( QObject * parent = 0 );
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095     <a class="code" href="class_como_1_1_source.html#ed762e69fdc70006add080c73192e854" title="Type of the source will be Int.">Source</a>(
+<a name="l00097"></a>00097         <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> <a class="code" href="class_como_1_1_source.html#1a4b11b6d59d73ef5985b1fd82e4a049">type</a>,
+<a name="l00099"></a>00099         <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#3652e6d548e46d7f89b8d97dbe606fac">name</a>,
+<a name="l00101"></a>00101         <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#561b3e89cc45d6dfb6194926e7852ca1">typeName</a>,
+<a name="l00103"></a>00103         <span class="keyword">const</span> QVariant &amp; <a class="code" href="class_como_1_1_source.html#ca4eeb6d628b093519d34c59af6f4d56">value</a>,
+<a name="l00105"></a>00105         <span class="keyword">const</span> QString &amp; desc,
+<a name="l00110"></a>00110         <a class="code" href="class_como_1_1_server_socket.html" title="Server socket.">ServerSocket</a> * <a class="code" href="class_como_1_1_source.html#6d5f81274042f664b4e02f9b7bd4033e">serverSocket</a> = 0,
+<a name="l00112"></a>00112         QObject * parent = 0 );
+<a name="l00113"></a>00113 
+<a name="l00114"></a>00114     <span class="keyword">virtual</span> ~<a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a>();
+<a name="l00115"></a>00115 
+<a name="l00120"></a>00120     <a class="code" href="class_como_1_1_source.html#ed762e69fdc70006add080c73192e854" title="Type of the source will be Int.">Source</a>( <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; other );
+<a name="l00121"></a>00121 
+<a name="l00126"></a>00126     <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; <a class="code" href="class_como_1_1_source.html#0d05c08474b8884572de266d72e07c0b" title="Be careful, m_serverSocket will not copied and QObject::parent will not change.">operator = </a>( <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; other );
+<a name="l00127"></a>00127 
+<a name="l00135"></a>00135     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8b6732e192e82957d327bf9c47c16289" title="Init server socket with this source.">initSource</a>();
 <a name="l00136"></a>00136 
-<a name="l00138"></a>00138     <span class="keyword">const</span> QVariant &amp; <a class="code" href="class_como_1_1_source.html#ca4eeb6d628b093519d34c59af6f4d56">value</a>() <span class="keyword">const</span>;
-<a name="l00147"></a>00147     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8239d9d2f5fb9d522eeb49ec7f21a58e" title="Set value of the source.">setValue</a>( <span class="keyword">const</span> QVariant &amp; v );
-<a name="l00155"></a>00155     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8239d9d2f5fb9d522eeb49ec7f21a58e" title="Set value of the source.">setValue</a>( <span class="keyword">const</span> QString &amp; v );
-<a name="l00163"></a>00163     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8239d9d2f5fb9d522eeb49ec7f21a58e" title="Set value of the source.">setValue</a>( <span class="keywordtype">int</span> v );
-<a name="l00171"></a>00171     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8239d9d2f5fb9d522eeb49ec7f21a58e" title="Set value of the source.">setValue</a>( <span class="keywordtype">double</span> v );
-<a name="l00172"></a>00172 
-<a name="l00174"></a>00174     <span class="keyword">const</span> QDateTime &amp; <a class="code" href="class_como_1_1_source.html#d12981b7f48071320c03b42dcebe3067">dateTime</a>() <span class="keyword">const</span>;
-<a name="l00176"></a>00176     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#e9786b790278e7e794fd6bcfb0b9bc97" title="Set date and time.">setDateTime</a>( <span class="keyword">const</span> QDateTime &amp; dt );
-<a name="l00177"></a>00177 
-<a name="l00179"></a>00179     <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> <a class="code" href="class_como_1_1_source.html#1a4b11b6d59d73ef5985b1fd82e4a049">type</a>() <span class="keyword">const</span>;
-<a name="l00181"></a>00181     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#40943a77609aa0b7a5d31c0cb28da40c" title="Set type of the source.">setType</a>( <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> t );
+<a name="l00145"></a>00145     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#284a1988706a42d2fec29e4802a99475" title="Deinit server socket with this source.">deinitSource</a>();
+<a name="l00146"></a>00146 
+<a name="l00148"></a>00148     <span class="keyword">const</span> QVariant &amp; <a class="code" href="class_como_1_1_source.html#ca4eeb6d628b093519d34c59af6f4d56">value</a>() <span class="keyword">const</span>;
+<a name="l00157"></a>00157     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8239d9d2f5fb9d522eeb49ec7f21a58e" title="Set value of the source.">setValue</a>( <span class="keyword">const</span> QVariant &amp; v );
+<a name="l00165"></a>00165     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8239d9d2f5fb9d522eeb49ec7f21a58e" title="Set value of the source.">setValue</a>( <span class="keyword">const</span> QString &amp; v );
+<a name="l00173"></a>00173     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8239d9d2f5fb9d522eeb49ec7f21a58e" title="Set value of the source.">setValue</a>( <span class="keywordtype">int</span> v );
+<a name="l00181"></a>00181     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#8239d9d2f5fb9d522eeb49ec7f21a58e" title="Set value of the source.">setValue</a>( <span class="keywordtype">double</span> v );
 <a name="l00182"></a>00182 
-<a name="l00184"></a>00184     <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#3652e6d548e46d7f89b8d97dbe606fac">name</a>() <span class="keyword">const</span>;
-<a name="l00186"></a>00186     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#dc2f1d162477ddd192e1a090b85df173" title="Set name of the source.">setName</a>( <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#3652e6d548e46d7f89b8d97dbe606fac">name</a> );
+<a name="l00184"></a>00184     <span class="keyword">const</span> QDateTime &amp; <a class="code" href="class_como_1_1_source.html#d12981b7f48071320c03b42dcebe3067">dateTime</a>() <span class="keyword">const</span>;
+<a name="l00186"></a>00186     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#e9786b790278e7e794fd6bcfb0b9bc97" title="Set date and time.">setDateTime</a>( <span class="keyword">const</span> QDateTime &amp; dt );
 <a name="l00187"></a>00187 
-<a name="l00189"></a>00189     <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#561b3e89cc45d6dfb6194926e7852ca1">typeName</a>() <span class="keyword">const</span>;
-<a name="l00191"></a>00191     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#2f8a91f74870158b8282ec96a25841c8" title="Set type name of the source.">setTypeName</a>( <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#561b3e89cc45d6dfb6194926e7852ca1">typeName</a> );
+<a name="l00189"></a>00189     <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> <a class="code" href="class_como_1_1_source.html#1a4b11b6d59d73ef5985b1fd82e4a049">type</a>() <span class="keyword">const</span>;
+<a name="l00191"></a>00191     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#40943a77609aa0b7a5d31c0cb28da40c" title="Set type of the source.">setType</a>( <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> t );
 <a name="l00192"></a>00192 
-<a name="l00194"></a>00194     <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#b1170b9ef22cadf7b3ea36ca8aa60aec">description</a>() <span class="keyword">const</span>;
-<a name="l00196"></a>00196     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#4d145dfe2163028133f0e73720b56724" title="Set description of the source.">setDescription</a>( <span class="keyword">const</span> QString &amp; desc );
+<a name="l00194"></a>00194     <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#3652e6d548e46d7f89b8d97dbe606fac">name</a>() <span class="keyword">const</span>;
+<a name="l00196"></a>00196     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#dc2f1d162477ddd192e1a090b85df173" title="Set name of the source.">setName</a>( <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#3652e6d548e46d7f89b8d97dbe606fac">name</a> );
 <a name="l00197"></a>00197 
-<a name="l00199"></a>00199     <a class="code" href="class_como_1_1_server_socket.html" title="Server socket.">ServerSocket</a> * <a class="code" href="class_como_1_1_source.html#6d5f81274042f664b4e02f9b7bd4033e">serverSocket</a>() <span class="keyword">const</span>;
-<a name="l00207"></a>00207     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#fbadb2035e7910fe756f7ff198fa39de" title="Set server socket.">setServerSocket</a>( <a class="code" href="class_como_1_1_server_socket.html" title="Server socket.">ServerSocket</a> * socket );
-<a name="l00208"></a>00208 
-<a name="l00210"></a>00210     <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code" href="class_como_1_1_source.html#2702daeae68470b8a082e285cf9d097d" title="Equality operator.">operator == </a>( <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; s1, <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; s2 );
-<a name="l00212"></a>00212     <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code" href="class_como_1_1_source.html#0499ea10babe120c20658fbf9e29200a" title="Not-equality operator.">operator != </a>( <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; s1, <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; s2 );
-<a name="l00213"></a>00213 
-<a name="l00214"></a>00214 <span class="keyword">private</span>:
-<a name="l00216"></a>00216     <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> m_type;
-<a name="l00218"></a>00218     QString m_name;
-<a name="l00220"></a>00220     QString m_typeName;
-<a name="l00222"></a>00222     <a class="code" href="class_como_1_1_server_socket.html" title="Server socket.">ServerSocket</a> * m_serverSocket;
-<a name="l00224"></a>00224     QDateTime m_dateTime;
-<a name="l00226"></a>00226     QString m_desc;
-<a name="l00228"></a>00228     QVariant m_value;
-<a name="l00229"></a>00229 }; <span class="comment">/* class Source */</span>
-<a name="l00230"></a>00230 
-<a name="l00231"></a>00231 } <span class="comment">/* namespace Como */</span>
-<a name="l00232"></a>00232 
-<a name="l00233"></a>00233 Q_DECLARE_METATYPE( <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Como::Source</a> )
-<a name="l00234"></a>00234 
-<a name="l00235"></a>00235 <span class="preprocessor">#endif // COMO__SOURCE_HPP__INCLUDED</span>
+<a name="l00199"></a>00199     <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#561b3e89cc45d6dfb6194926e7852ca1">typeName</a>() <span class="keyword">const</span>;
+<a name="l00201"></a>00201     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#2f8a91f74870158b8282ec96a25841c8" title="Set type name of the source.">setTypeName</a>( <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#561b3e89cc45d6dfb6194926e7852ca1">typeName</a> );
+<a name="l00202"></a>00202 
+<a name="l00204"></a>00204     <span class="keyword">const</span> QString &amp; <a class="code" href="class_como_1_1_source.html#b1170b9ef22cadf7b3ea36ca8aa60aec">description</a>() <span class="keyword">const</span>;
+<a name="l00206"></a>00206     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#4d145dfe2163028133f0e73720b56724" title="Set description of the source.">setDescription</a>( <span class="keyword">const</span> QString &amp; desc );
+<a name="l00207"></a>00207 
+<a name="l00209"></a>00209     <a class="code" href="class_como_1_1_server_socket.html" title="Server socket.">ServerSocket</a> * <a class="code" href="class_como_1_1_source.html#6d5f81274042f664b4e02f9b7bd4033e">serverSocket</a>() <span class="keyword">const</span>;
+<a name="l00217"></a>00217     <span class="keywordtype">void</span> <a class="code" href="class_como_1_1_source.html#fbadb2035e7910fe756f7ff198fa39de" title="Set server socket.">setServerSocket</a>( <a class="code" href="class_como_1_1_server_socket.html" title="Server socket.">ServerSocket</a> * socket );
+<a name="l00218"></a>00218 
+<a name="l00220"></a>00220     <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code" href="class_como_1_1_source.html#2702daeae68470b8a082e285cf9d097d" title="Equality operator.">operator == </a>( <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; s1, <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; s2 );
+<a name="l00222"></a>00222     <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code" href="class_como_1_1_source.html#0499ea10babe120c20658fbf9e29200a" title="Not-equality operator.">operator != </a>( <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; s1, <span class="keyword">const</span> <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Source</a> &amp; s2 );
+<a name="l00223"></a>00223 
+<a name="l00224"></a>00224 <span class="keyword">private</span>:
+<a name="l00226"></a>00226     <a class="code" href="class_como_1_1_source.html#7c3ec13e2b1238b3da0ad880c4a04aaf" title="Type of the source.">Type</a> m_type;
+<a name="l00228"></a>00228     QString m_name;
+<a name="l00230"></a>00230     QString m_typeName;
+<a name="l00232"></a>00232     <a class="code" href="class_como_1_1_server_socket.html" title="Server socket.">ServerSocket</a> * m_serverSocket;
+<a name="l00234"></a>00234     QDateTime m_dateTime;
+<a name="l00236"></a>00236     QString m_desc;
+<a name="l00238"></a>00238     QVariant m_value;
+<a name="l00239"></a>00239 }; <span class="comment">/* class Source */</span>
+<a name="l00240"></a>00240 
+<a name="l00241"></a>00241 } <span class="comment">/* namespace Como */</span>
+<a name="l00242"></a>00242 
+<a name="l00243"></a>00243 Q_DECLARE_METATYPE( <a class="code" href="class_como_1_1_source.html" title="This is the main class, which provides the distribution of information on the status...">Como::Source</a> )
+<a name="l00244"></a>00244 
+<a name="l00245"></a>00245 <span class="preprocessor">#endif // COMO__SOURCE_HPP__INCLUDED</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Aug 23 21:20:59 2012 for Como by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Sat Sep 21 10:37:09 2013 for Como by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>
