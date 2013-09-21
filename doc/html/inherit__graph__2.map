@@ -1,4 +1,0 @@
-<area shape="rect" href="$class_como_1_1_message.html" title="Base class of the message in Como protocol." alt="" coords="7,56,121,83">
-<area shape="rect" href="$class_como_1_1_deinit_source_message.html" title="This is message about deinitialization of the source." alt="" coords="187,5,376,32">
-<area shape="rect" href="$class_como_1_1_get_list_of_sources_message.html" title="If ServerSocket recives this type of message then he send out list of all available..." alt="" coords="172,56,391,83">
-<area shape="rect" href="$class_como_1_1_source_message.html" title="This is response to the GetListOfSourcesMessage message." alt="" coords="203,107,360,133">
