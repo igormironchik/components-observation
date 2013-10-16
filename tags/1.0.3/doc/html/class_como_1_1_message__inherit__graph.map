@@ -1,0 +1,3 @@
+<area shape="rect" id="node2" href="$class_como_1_1_deinit_source_message.html" title="This is message about deinitialization of the source." alt="" coords="5,80,211,107">
+<area shape="rect" id="node3" href="$class_como_1_1_get_list_of_sources_message.html" title="If ServerSocket recives this type of message then he send out list of all available..." alt="" coords="235,80,471,107">
+<area shape="rect" id="node4" href="$class_como_1_1_source_message.html" title="This is response to the GetListOfSourcesMessage message." alt="" coords="496,80,667,107">
