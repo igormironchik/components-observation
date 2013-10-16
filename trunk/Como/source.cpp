@@ -133,27 +133,6 @@ Source::setValue( const QVariant & v )
 	emit valueChanged( m_value );
 }
 
-void
-Source::setValue( const QString & v )
-{
-	if( m_type == String )
-		setValue( QVariant( v ) );
-}
-
-void
-Source::setValue( int v )
-{
-	if( m_type == Int )
-		setValue( QVariant( v ) );
-}
-
-void
-Source::setValue( double v )
-{
-	if( m_type == Double )
-		setValue( QVariant( v ) );
-}
-
 const QDateTime &
 Source::dateTime() const
 {
