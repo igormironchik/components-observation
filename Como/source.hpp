@@ -155,30 +155,6 @@ public:
 		Emit valueChanged( const QVariant& ).
 	*/
 	void setValue( const QVariant & v );
-	/*!
-		Set value of the source.
-
-		This function is provided for convenience.
-
-		If type of the source is not String then nothing will happen.
-	*/
-	void setValue( const QString & v );
-	/*!
-		Set value of the source.
-
-		This function is provided for convenience.
-
-		If type of the source is not Int then nothing will happen.
-	*/
-	void setValue( int v );
-	/*!
-		Set value of the source.
-
-		This function is provided for convenience.
-
-		If type of the source is not Double then nothing will happen.
-	*/
-	void setValue( double v );
 
 	//! \return Time of the update.
 	const QDateTime & dateTime() const;
