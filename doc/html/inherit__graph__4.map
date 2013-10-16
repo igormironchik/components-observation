@@ -1,0 +1,3 @@
+<area shape="rect" id="node1" href="$class_como_1_1_protocol_exception.html" title="Exception in protocol." alt="" coords="6,31,189,57">
+<area shape="rect" id="node2" href="$class_como_1_1_garbage_received_exception.html" title="This exception throws when garbage received." alt="" coords="261,5,504,32">
+<area shape="rect" id="node3" href="$class_como_1_1_not_enough_data_received_exception.html" title="This exception throws when not enough data to parse message in the buffer." alt="" coords="238,56,527,83">
