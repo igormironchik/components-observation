@@ -55,8 +55,8 @@ ClientSocket::ClientSocket( QObject * parent )
 	:	QTcpSocket( parent )
 	,	d( new ClientSocketPrivate )
 {
-	connect( this, SIGNAL( readyRead() ),
-		SLOT( slotReadyRead() ) );
+	connect( this, &ClientSocket::readyRead,
+		this, &ClientSocket::slotReadyRead );
 }
 
 ClientSocket::~ClientSocket()
