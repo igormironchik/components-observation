@@ -171,12 +171,12 @@ ServerSocket::incomingConnection( int socketDescriptor )
 
 	if( socket->setSocketDescriptor( socketDescriptor ) )
 	{
-		connect( socket, SIGNAL( disconnected() ),
-			this, SLOT( slotClientDisconnected() ),
+		connect( socket, &ClientSocket::disconnected,
+			this, &ServerSocket::slotClientDisconnected,
 			Qt::QueuedConnection );
 
-		connect( socket, SIGNAL( getListOfSourcesMessageReceived() ),
-			this, SLOT( slotGetListOfSourcesMessageReceived() ),
+		connect( socket, &ClientSocket::getListOfSourcesMessageReceived,
+			this, &ServerSocket::slotGetListOfSourcesMessageReceived,
 			Qt::QueuedConnection );
 
 		{

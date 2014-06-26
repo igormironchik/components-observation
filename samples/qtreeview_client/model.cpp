@@ -67,11 +67,11 @@ Model::Model( Como::ClientSocket * socket, QObject * parent )
 	:	QAbstractTableModel( parent )
 	,	d( new ModelPrivate )
 {
-	connect( socket, SIGNAL( sourceDeinitialized( const Como::Source & ) ),
-		this, SLOT( slotSourceHasBeenDeinitialized( const Como::Source & ) ) );
+	connect( socket, &Como::ClientSocket::sourceDeinitialized,
+		this, &Model::slotSourceHasBeenDeinitialized );
 
-	connect( socket, SIGNAL( sourceHasUpdatedValue( const Como::Source & ) ),
-		this, SLOT( slotSourceHasUpdatedValue( const Como::Source & ) ) );
+	connect( socket, &Como::ClientSocket::sourceHasUpdatedValue,
+		this, &Model::slotSourceHasUpdatedValue );
 }
 
 Model::~Model()

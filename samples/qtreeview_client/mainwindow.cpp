@@ -90,11 +90,11 @@ MainWindow::init()
 
 	setCentralWidget( treeView );
 
-	connect( d->m_socket, SIGNAL( connected() ),
-		this, SLOT( slotConnected() ) );
+	connect( d->m_socket, &Como::ClientSocket::connected,
+		this, &MainWindow::slotConnected );
 
-	connect( d->m_socket, SIGNAL( disconnected() ),
-		this, SLOT( slotDisconnected() ) );
+	connect( d->m_socket, &Como::ClientSocket::disconnected,
+		this, &MainWindow::slotDisconnected );
 
 	slotDisconnected();
 }
