@@ -34,14 +34,17 @@
 #include <Como/boost_protobuf/bp_client_socket.hpp>
 #include <Como/boost_protobuf/bp_source.hpp>
 #include <Como/boost_protobuf/bp_server_socket.hpp>
+#include <Como/boost_protobuf/messages.pb.h>
 
 // C++ include.
 #include <cstdint>
 #include <cstring>
 #include <vector>
+#include <sstream>
 
 // boost include.
 #include <boost/asio.hpp>
+#include <boost/date_time.hpp>
 
 
 namespace Como {
@@ -51,6 +54,10 @@ namespace BoostProtobuf {
 //! Magic number for the Como protocol #1.
 static const char c_magicNumber1[] =
 	{ 0x43u, 0x4Fu, 0x4Du, 0x4Fu, 0x50u, 0x52u, 0x4Fu, 0x31u };
+
+//! Magic number for the Como protocol #2.
+static const char c_magicNumber2[] =
+	{ 0x43u, 0x4Fu, 0x4Du, 0x4Fu, 0x50u, 0x52u, 0x4Fu, 0x32u };
 
 /*!
 	Message's header size. 12 bytes.
@@ -63,6 +70,12 @@ static const std::uint8_t c_headerSize = 12;
 
 //! Type of the GetListOfSourcesMessage message.
 static const std::uint16_t c_getListOfSourcesMessageType = 0x0001;
+
+//! Type of the SourceMessage message.
+static const std::uint16_t c_sourceMessageType = 0x0002;
+
+//! Type of the DeinitSourceMessage message.
+static const std::uint16_t c_deinitSourceMessageType = 0x0003;
 
 
 //
@@ -167,16 +180,120 @@ ClientSocket::start()
 			} );
 }
 
+static inline std::string anyToString( const boost::any & value,
+	Source::Type type )
+{
+	try {
+		switch( type )
+		{
+			case Source::String :
+				return boost::any_cast< std::string > ( value );
+
+			case Source::Int :
+			{
+				std::ostringstream stream;
+				stream << boost::any_cast< int > ( value );
+
+				return stream.str();
+			}
+
+			case Source::UInt :
+			{
+				std::ostringstream stream;
+				stream << boost::any_cast< unsigned int > ( value );
+
+				return stream.str();
+			}
+
+			case Source::LongLong :
+			{
+				std::ostringstream stream;
+				stream << boost::any_cast< long long > ( value );
+
+				return stream.str();
+			}
+
+			case Source::ULongLong :
+			{
+				std::ostringstream stream;
+				stream << boost::any_cast< unsigned long long > ( value );
+
+				return stream.str();
+			}
+
+			case Source::Double :
+			{
+				std::ostringstream stream;
+				stream << boost::any_cast< double > ( value );
+
+				return stream.str();
+			}
+
+			case Source::DateTime :
+			case Source::Time :
+				return boost::posix_time::to_iso_extended_string(
+					boost::any_cast< boost::posix_time::ptime > ( value ) );
+		}
+	}
+	catch( const boost::bad_any_cast & )
+	{
+		return std::string();
+	}
+}
+
+static inline void write16BitNumber( std::ostringstream & stream,
+	std::uint16_t number )
+{
+	stream << std::right << std::setfill( '0' ) << std::setw( 4 ) << std::hex
+		<< number;
+}
+
+static inline void writeMessage( const Source & source,
+	std::uint16_t type,
+	tcp::socket & socket,
+	ServerSocket * server,
+	ClientSocket * client )
+{
+	ComoMessage msg;
+	msg.set_type( source.type() );
+	msg.set_name( source.name() );
+	msg.set_typename_( source.typeName() );
+	msg.set_datetime( boost::posix_time::to_iso_extended_string(
+		source.dateTime() ) );
+	msg.set_description( source.description() );
+	msg.set_value( anyToString( source.value(), source.type() ) );
+
+	const std::string strMessage = msg.SerializeAsString();
+
+	std::ostringstream stream;
+	stream.write( c_magicNumber2, 8 );
+	write16BitNumber( stream, type );
+	write16BitNumber( stream, ( std::uint16_t ) strMessage.length() );
+
+	const std::string data = stream.str() + strMessage;
+
+	boost::asio::async_write( socket,
+		boost::asio::buffer( data.data(), data.length() ),
+		[ server, client ] ( boost::system::error_code error, std::size_t /*length*/ )
+			{
+				if( error )
+					server->disconnection( client );
+			}
+	);
+}
+
 void
 ClientSocket::sendSourceMessage( const Source & source )
 {
-
+	writeMessage( source, c_sourceMessageType,
+		d->m_socket, d->m_server, this );
 }
 
 void
 ClientSocket::sendDeinitSourceMessage( const Source & source )
 {
-
+	writeMessage( source, c_deinitSourceMessageType,
+		d->m_socket, d->m_server, this );
 }
 
 } /* namespace BoostProtobuf */
