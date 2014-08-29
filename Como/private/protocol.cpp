@@ -296,6 +296,9 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 			{
 				msg = QSharedPointer< Message > ( new DeinitSourceMessage );
 			} break;
+
+			default :
+				return QSharedPointer < Message > ();
 		}
 
 		if( !msg->deserialize( msgData ) )
