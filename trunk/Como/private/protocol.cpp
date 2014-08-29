@@ -255,6 +255,10 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 			default :
 				return QSharedPointer < Message > ();
 		}
+#elif // COMO_BOOST_PROTOBUF
+
+		return QSharedPointer < Message > ();
+
 #endif // COMO_BOOST_PROTOBUF
 	}
 	else
