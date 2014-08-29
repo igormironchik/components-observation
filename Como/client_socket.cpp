@@ -116,28 +116,31 @@ ClientSocket::slotReadyRead()
 
 			d->m_buf.remove( bytesRead );
 
-			switch( msg->type() )
+			if( msg.data() )
 			{
-				case GetListOfSourcesMessage::messageType :
+				switch( msg->type() )
 				{
-					emit getListOfSourcesMessageReceived();
-				} break;
+					case GetListOfSourcesMessage::messageType :
+					{
+						emit getListOfSourcesMessageReceived();
+					} break;
 
-				case SourceMessage::messageType :
-				{
-					SourceMessage * sourceMsg =
-						dynamic_cast< SourceMessage* > ( msg.data() );
+					case SourceMessage::messageType :
+					{
+						SourceMessage * sourceMsg =
+							dynamic_cast< SourceMessage* > ( msg.data() );
 
-					emit sourceHasUpdatedValue( sourceMsg->source() );
-				} break;
+						emit sourceHasUpdatedValue( sourceMsg->source() );
+					} break;
 
-				case DeinitSourceMessage::messageType :
-				{
-					DeinitSourceMessage * deinitMsg =
-						dynamic_cast< DeinitSourceMessage* > ( msg.data() );
+					case DeinitSourceMessage::messageType :
+					{
+						DeinitSourceMessage * deinitMsg =
+							dynamic_cast< DeinitSourceMessage* > ( msg.data() );
 
-					emit sourceDeinitialized( deinitMsg->source() );
-				} break;
+						emit sourceDeinitialized( deinitMsg->source() );
+					} break;
+				}
 			}
 		}
 	}

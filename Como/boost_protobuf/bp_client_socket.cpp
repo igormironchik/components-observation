@@ -233,6 +233,9 @@ static inline std::string anyToString( const boost::any & value,
 			case Source::Time :
 				return boost::posix_time::to_iso_extended_string(
 					boost::any_cast< boost::posix_time::ptime > ( value ) );
+
+			default :
+				return std::string();
 		}
 	}
 	catch( const boost::bad_any_cast & )
