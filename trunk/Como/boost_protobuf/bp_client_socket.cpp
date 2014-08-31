@@ -41,6 +41,9 @@
 #include <cstring>
 #include <vector>
 #include <sstream>
+#include <thread>
+#include <atomic>
+#include <iostream>
 
 // boost include.
 #include <boost/asio.hpp>
@@ -84,11 +87,9 @@ static const std::uint16_t c_deinitSourceMessageType = 0x0003;
 
 class ClientSocketPrivate {
 public:
-	ClientSocketPrivate( ClientSocket * parent,
-		boost::asio::io_service & io,
+	ClientSocketPrivate( boost::asio::io_service & io,
 		ServerSocket * server )
-		:	m_parent( parent )
-		,	m_socket( io )
+		:	m_socket( io )
 		,	m_server( server )
 	{
 	}
@@ -100,21 +101,33 @@ public:
 	}
 
 	//! Parse message's header and notify server.
-	void parseHeaderAndNotifyServer( const char * header )
+	bool parseHeaderAndNotifyServer( const char * header )
 	{
+		std::cout << "parseHeaderAndNotifyServer" << std::endl;
+		std::cout.write( header, 8 );
+		std::cout << std::endl;
+
 		if( std::strncmp( c_magicNumber1, header, 8 ) == 0 )
 		{
+			std::cout << "send list of sources" << std::endl;
+
 			const std::uint16_t type = parseDigit( header + 8 );
 			const std::uint16_t length = parseDigit( header + 10 );
 
 			if( c_getListOfSourcesMessageType == type )
-				m_server->sendListOfSources( m_parent );
+				m_server->sendListOfSources( m_pointer );
 
 			if( length > 0 )
 				readMessage( length );
+
+			return true;
 		}
 		else
-			m_server->disconnection( m_parent );
+		{
+			m_server->disconnection( m_pointer );
+
+			return false;
+		}
 	}
 
 	//! Read message.
@@ -122,21 +135,29 @@ public:
 	{
 		std::vector< char > message( length );
 
+		std::weak_ptr< ClientSocket > sp = m_pointer;
+
 		boost::asio::async_read( m_socket,
 			boost::asio::buffer( message.data(), length ),
-			[ this ] ( boost::system::error_code error, std::size_t /*length*/ )
+			[ this, &sp ] ( boost::system::error_code error, std::size_t /*length*/ )
 				{
-					if( error )
-						m_server->disconnection( m_parent );
-				} );
+					if( sp.lock() )
+					{
+						if( error )
+							m_server->disconnection( m_pointer );
+					}
+				}
+		);
 	}
 
 	//! Parent.
-	ClientSocket * m_parent;
+	std::weak_ptr< ClientSocket > m_pointer;
 	//! Socket.
 	tcp::socket m_socket;
 	//! Server socket.
 	ServerSocket * m_server;
+	//! Stopped flag
+	std::atomic_flag m_isStopped;
 }; // class ClientSocketPrivate;
 
 
@@ -146,12 +167,13 @@ public:
 
 ClientSocket::ClientSocket( boost::asio::io_service & io,
 	ServerSocket * server )
-	:	d( new ClientSocketPrivate( this, io, server ) )
+	:	d( new ClientSocketPrivate( io, server ) )
 {
 }
 
 ClientSocket::~ClientSocket()
 {
+	std::cout << "!!! ClientSocket destructured..." << std::endl;
 }
 
 tcp::socket &
@@ -161,23 +183,44 @@ ClientSocket::socket() const
 }
 
 void
-ClientSocket::start()
+ClientSocket::start( std::shared_ptr< ClientSocket > socket )
 {
-	char header[ c_headerSize ];
+	std::cout << "start reading from socket" << std::endl;
 
-	boost::asio::async_read( d->m_socket,
-		boost::asio::buffer( header, c_headerSize ),
-		[ this, &header ] ( boost::system::error_code error, std::size_t /*length*/ )
-			{
-				if( error )
-					d->m_server->disconnection( this );
-				else
+	if( d->m_socket.is_open() )
+	{
+		char header[ c_headerSize ];
+
+		boost::asio::async_read( d->m_socket,
+			boost::asio::buffer( header, c_headerSize ),
+			[ this, &header, socket ] ( boost::system::error_code error, std::size_t /*length*/ )
 				{
-					d->parseHeaderAndNotifyServer( header );
-
-					start();
+					if( error )
+						d->m_server->disconnection( d->m_pointer );
+					else
+					{
+						if( d->parseHeaderAndNotifyServer( header ) &&
+							d->m_socket.is_open() )
+								start( socket );
+					}
 				}
-			} );
+		);
+	}
+}
+
+void
+ClientSocket::stop( std::shared_ptr< ClientSocket > socket )
+{
+	std::cout << "stop" << std::endl;
+
+	if( !d->m_isStopped.test_and_set( std::memory_order_acquire ) )
+	{
+		socket->socket().shutdown( tcp::socket::shutdown_both );
+		socket->socket().close();
+
+		while( socket->socket().is_open() )
+			std::this_thread::yield();
+	}
 }
 
 static inline std::string anyToString( const boost::any & value,
@@ -246,16 +289,18 @@ static inline std::string anyToString( const boost::any & value,
 
 static inline void write16BitNumber( std::ostringstream & stream,
 	std::uint16_t number )
-{
+{	
 	stream << std::right << std::setfill( '0' ) << std::setw( 4 ) << std::hex
 		<< number;
+
+	std::cout << "write16BitNumber " << number << " " << stream.str() << std::endl;
 }
 
 static inline void writeMessage( const Source & source,
 	std::uint16_t type,
 	tcp::socket & socket,
 	ServerSocket * server,
-	ClientSocket * client )
+	const std::weak_ptr< ClientSocket > & pointer )
 {
 	ComoMessage msg;
 	msg.set_type( source.type() );
@@ -277,10 +322,10 @@ static inline void writeMessage( const Source & source,
 
 	boost::asio::async_write( socket,
 		boost::asio::buffer( data.data(), data.length() ),
-		[ server, client ] ( boost::system::error_code error, std::size_t /*length*/ )
+		[ server, &pointer ] ( boost::system::error_code error, std::size_t /*length*/ )
 			{
-				if( error )
-					server->disconnection( client );
+				if( error && !pointer.expired() )
+					server->disconnection( pointer );
 			}
 	);
 }
@@ -288,15 +333,25 @@ static inline void writeMessage( const Source & source,
 void
 ClientSocket::sendSourceMessage( const Source & source )
 {
-	writeMessage( source, c_sourceMessageType,
-		d->m_socket, d->m_server, this );
+	std::cout << "sendSourceMessage " << source.name() << std::endl;
+
+	if( d->m_socket.is_open() )
+		writeMessage( source, c_sourceMessageType,
+			d->m_socket, d->m_server, d->m_pointer );
 }
 
 void
 ClientSocket::sendDeinitSourceMessage( const Source & source )
 {
-	writeMessage( source, c_deinitSourceMessageType,
-		d->m_socket, d->m_server, this );
+	if( d->m_socket.is_open() )
+		writeMessage( source, c_deinitSourceMessageType,
+			d->m_socket, d->m_server, d->m_pointer );
+}
+
+void
+ClientSocket::setPtr( std::shared_ptr< ClientSocket > p )
+{
+	d->m_pointer = p;
 }
 
 } /* namespace BoostProtobuf */

@@ -72,17 +72,27 @@ public:
 	ClientSocket( const ClientSocket & ) = delete;
 	ClientSocket & operator = ( const ClientSocket & ) = delete;
 
+protected:
+	friend class ServerSocket;
+	friend class ServerSocketPrivate;
+
 	//! \return Socket.
 	tcp::socket & socket() const;
 
 	//! Start reading messages from the socket.
-	void start();
+	void start( std::shared_ptr< ClientSocket > socket );
+
+	//! Stop working.
+	void stop( std::shared_ptr< ClientSocket > socket );
 
 	//! Send information about source.
 	void sendSourceMessage( const Source & source );
 
 	//! Send information about deinitialization of the source.
 	void sendDeinitSourceMessage( const Source & source );
+
+	//! Set pointer to this socket.
+	void setPtr( std::shared_ptr< ClientSocket > p );
 
 private:
 	std::unique_ptr< ClientSocketPrivate > d;

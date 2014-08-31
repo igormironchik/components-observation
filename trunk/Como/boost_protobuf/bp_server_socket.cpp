@@ -44,6 +44,7 @@
 #include <list>
 #include <mutex>
 #include <algorithm>
+#include <iostream>
 
 
 namespace Como {
@@ -94,21 +95,28 @@ public:
 	}
 
 	//! Send list of sources to the client.
-	void sendListOfSources( ClientSocket * socket )
+	void sendListOfSources( const std::weak_ptr< ClientSocket > & socket )
 	{
-		std::lock_guard< std::mutex > lock( m_mutex );
+		auto sp = socket.lock();
 
-		std::for_each( m_sources.begin(), m_sources.end(),
-			[ &socket ] ( const Source & source )
-				{
-					socket->sendSourceMessage( source );
-				}
-		);
+		if( sp )
+		{
+			std::lock_guard< std::mutex > lock( m_mutex );
+
+			std::for_each( m_sources.begin(), m_sources.end(),
+				[ &sp ] ( const Source & source )
+					{
+						sp->sendSourceMessage( source );
+					}
+			);
+		}
 	}
 
 	//! Start accepting new conection.
 	void startAcceptNewConnection()
 	{
+		std::cout << "startAcceptNewConnection" << std::endl;
+
 		auto socket = std::shared_ptr< ClientSocket >
 			( new ClientSocket( m_acceptor.get_io_service(), m_parent ) );
 
@@ -118,35 +126,34 @@ public:
 	}
 
 	//! Handle accept.
-	void handleAccept( const std::shared_ptr< ClientSocket > & socket,
+	void handleAccept( std::shared_ptr< ClientSocket > socket,
 		const boost::system::error_code & error )
 	{
+		std::cout << "handleAccept" << std::endl;
+
 		if( !error )
 		{
-			socket->start();
-
 			std::lock_guard< std::mutex > lock( m_mutex );
 
-			m_clients.emplace_back( socket );
+			std::cout << "handleAccept 1"<< std::endl;
+
+			socket->setPtr( socket );
+
+			std::cout << "handleAccept 2"<< std::endl;
+
+			socket->start( socket );
+
+			std::cout << "handleAccept 3"<< std::endl;
+
+			m_clients.push_back( socket );
+
+			std::cout << "handleAccept 4"<< std::endl;
 		}
 
 		startAcceptNewConnection();
 	}
 
 	typedef std::list< std::shared_ptr< ClientSocket > > ListOfSockets;
-
-	//! \return Iterator to the client socket.
-	ListOfSockets::const_iterator findSocket( ClientSocket * socket )
-	{
-		for( auto it = m_clients.begin(), last = m_clients.end();
-			 it != last; ++it )
-		{
-			if( it->get() == socket )
-				return it;
-		}
-
-		return m_clients.end();
-	}
 
 	//! Parent.
 	ServerSocket * m_parent;
@@ -177,20 +184,28 @@ ServerSocket::~ServerSocket()
 }
 
 void
-ServerSocket::disconnection( ClientSocket * socket )
+ServerSocket::disconnection( const std::weak_ptr< ClientSocket > & socket )
 {
-	socket->socket().close();
+	std::cout << "disconnection" << std::endl;
 
-	std::lock_guard< std::mutex > lock( d->m_mutex );
+	std::shared_ptr< ClientSocket > sp = socket.lock();
 
-	auto it = d->findSocket( socket );
+	if( sp )
+	{
+		std::lock_guard< std::mutex > lock( d->m_mutex );
 
-	if( it != d->m_clients.end() )
-		d->m_clients.erase( it );
+		auto it = std::find( d->m_clients.begin(), d->m_clients.end(),
+			sp );
+
+		if( it != d->m_clients.end() )
+			d->m_clients.erase( it );
+
+		sp->stop( sp );
+	}
 }
 
 void
-ServerSocket::sendListOfSources( ClientSocket * socket )
+ServerSocket::sendListOfSources( const std::weak_ptr< ClientSocket > & socket )
 {
 	d->sendListOfSources( socket );
 }
