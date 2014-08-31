@@ -74,10 +74,10 @@ public:
 	ServerSocket & operator = ( const ServerSocket & ) = delete;
 
 	//! Disconnection occured.
-	void disconnection( ClientSocket * socket );
+	void disconnection( const std::weak_ptr< ClientSocket > & socket );
 
 	//! Send list of sources.
-	void sendListOfSources( ClientSocket * socket );
+	void sendListOfSources( const std::weak_ptr< ClientSocket > & socket );
 
 	/*!
 		Initialize sources list with new source.

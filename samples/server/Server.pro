@@ -7,7 +7,7 @@ INCLUDEPATH += . ../..
 CONFIG += console qt
 QT += network
 QT -= gui
-LIBS += -L../../lib -lComo
+LIBS += -L../../lib -lComo -llibprotobuf
 
 HEADERS += first_thread.hpp \
            second_thread.hpp \

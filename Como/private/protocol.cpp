@@ -43,6 +43,7 @@
 
 // Qt include.
 #include <QDataStream>
+#include <QDebug>
 
 
 namespace Como {
@@ -132,6 +133,8 @@ Protocol::writeMessage( const Message & msg )
 
 	dataStream << c_magicNumber << msg.type() << msgDataSize;
 	dataStream.writeRawData( msgData->constData(), msgDataSize );
+
+	qDebug() << *data.data();
 
 	return data;
 }
@@ -228,6 +231,16 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 
 	dataStream >> magicNumber >> messageType >> messageLength;
 
+	qDebug() << magicNumber << messageType << messageLength;
+
+	if( messageType != GetListOfSourcesMessage::messageType &&
+		messageType != SourceMessage::messageType &&
+		messageType != DeinitSourceMessage::messageType )
+			throw GarbageReceivedException();
+
+	if( data.size() < c_headerSize + messageLength )
+		throw NotEnoughDataReceivedException();
+
 	if( magicNumber == c_magicNumber2 )
 	{
 #ifdef COMO_BOOST_PROTOBUF
@@ -236,28 +249,36 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 		dataStream.readRawData( data.data(), messageLength );
 
 		ComoMessage msg;
-		msg.ParseFromArray( data.constData(), messageLength );
 
-		switch( messageType )
+		if( msg.ParseFromArray( data.constData(), messageLength ) )
 		{
-			case GetListOfSourcesMessage::messageType :
-				return QSharedPointer< Message > (
-					new GetListOfSourcesMessage );
+			switch( messageType )
+			{
+				case GetListOfSourcesMessage::messageType :
+					return QSharedPointer< Message > (
+						new GetListOfSourcesMessage );
 
-			case SourceMessage::messageType :
-				return QSharedPointer< Message > (
-					new SourceMessage( parseSource( msg ) ) );
+				case SourceMessage::messageType :
+					return QSharedPointer< Message > (
+						new SourceMessage( parseSource( msg ) ) );
 
-			case DeinitSourceMessage::messageType :
-				return QSharedPointer< Message > (
-					new DeinitSourceMessage( parseSource( msg ) ) );
+				case DeinitSourceMessage::messageType :
+					return QSharedPointer< Message > (
+						new DeinitSourceMessage( parseSource( msg ) ) );
 
-			default :
-				return QSharedPointer < Message > ();
+				default :
+					throw GarbageReceivedException();
+			}
+		}
+		else
+		{
+			qDebug() << "protobuf parsing failed";
+
+			throw GarbageReceivedException();
 		}
 #elif // COMO_BOOST_PROTOBUF
 
-		return QSharedPointer < Message > ();
+		throw GarbageReceivedException();
 
 #endif // COMO_BOOST_PROTOBUF
 	}
@@ -265,14 +286,6 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 	{
 		if( magicNumber != c_magicNumber )
 			throw GarbageReceivedException();
-
-		if( messageType != GetListOfSourcesMessage::messageType &&
-			messageType != SourceMessage::messageType &&
-			messageType != DeinitSourceMessage::messageType )
-				throw GarbageReceivedException();
-
-		if( data.size() < c_headerSize + messageLength )
-			throw NotEnoughDataReceivedException();
 
 		QByteArray msgData( messageLength, 0x00 );
 
