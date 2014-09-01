@@ -21,5 +21,7 @@ SOURCES += client_socket.cpp \
            private/buffer.cpp \
            private/messages.cpp \
            private/protocol.cpp
-           
-include( boost_protobuf/boost_protobuf.pri )
+
+contains( DEFINES, COMO_BOOST_PROTOBUF ) {
+    include( boost_protobuf/boost_protobuf.pri )
+}

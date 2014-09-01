@@ -268,7 +268,7 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 		}
 		else
 			throw GarbageReceivedException();
-#elif // COMO_BOOST_PROTOBUF
+#else // COMO_BOOST_PROTOBUF
 
 		throw GarbageReceivedException();
 
