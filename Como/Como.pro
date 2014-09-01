@@ -8,6 +8,8 @@ CONFIG += staticlib
 QT -= gui
 QT += network
 
+DEFINES += COMO_BOOST_PROTOBUF
+
 HEADERS += client_socket.hpp \
            server_socket.hpp \
            source.hpp \
