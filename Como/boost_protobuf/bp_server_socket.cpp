@@ -44,7 +44,6 @@
 #include <list>
 #include <mutex>
 #include <algorithm>
-#include <iostream>
 
 
 namespace Como {
@@ -74,9 +73,9 @@ public:
 		std::lock_guard< std::mutex > lock( m_mutex );
 
 		std::for_each( m_clients.begin(), m_clients.end(),
-			[ &source ] ( const std::shared_ptr< ClientSocket > & socket )
+			[ &source ] ( std::shared_ptr< ClientSocket > socket )
 				{
-					socket->sendSourceMessage( source );
+					socket->sendSourceMessage( source, socket );
 				}
 		);
 	}
@@ -87,36 +86,29 @@ public:
 		std::lock_guard< std::mutex > lock( m_mutex );
 
 		std::for_each( m_clients.begin(), m_clients.end(),
-			[ &source ] ( const std::shared_ptr< ClientSocket > & socket )
+			[ &source ] ( std::shared_ptr< ClientSocket > socket )
 				{
-					socket->sendDeinitSourceMessage( source );
+					socket->sendDeinitSourceMessage( source, socket );
 				}
 		);
 	}
 
 	//! Send list of sources to the client.
-	void sendListOfSources( const std::weak_ptr< ClientSocket > & socket )
+	void sendListOfSources( std::shared_ptr< ClientSocket > socket )
 	{
-		auto sp = socket.lock();
+		std::lock_guard< std::mutex > lock( m_mutex );
 
-		if( sp )
-		{
-			std::lock_guard< std::mutex > lock( m_mutex );
-
-			std::for_each( m_sources.begin(), m_sources.end(),
-				[ &sp ] ( const Source & source )
-					{
-						sp->sendSourceMessage( source );
-					}
-			);
-		}
+		std::for_each( m_sources.begin(), m_sources.end(),
+			[ socket ] ( const Source & source )
+				{
+					socket->sendSourceMessage( source, socket );
+				}
+		);
 	}
 
 	//! Start accepting new conection.
 	void startAcceptNewConnection()
 	{
-		std::cout << "startAcceptNewConnection" << std::endl;
-
 		auto socket = std::shared_ptr< ClientSocket >
 			( new ClientSocket( m_acceptor.get_io_service(), m_parent ) );
 
@@ -129,25 +121,13 @@ public:
 	void handleAccept( std::shared_ptr< ClientSocket > socket,
 		const boost::system::error_code & error )
 	{
-		std::cout << "handleAccept" << std::endl;
-
 		if( !error )
 		{
 			std::lock_guard< std::mutex > lock( m_mutex );
 
-			std::cout << "handleAccept 1"<< std::endl;
-
-			socket->setPtr( socket );
-
-			std::cout << "handleAccept 2"<< std::endl;
-
 			socket->start( socket );
 
-			std::cout << "handleAccept 3"<< std::endl;
-
 			m_clients.push_back( socket );
-
-			std::cout << "handleAccept 4"<< std::endl;
 		}
 
 		startAcceptNewConnection();
@@ -184,28 +164,21 @@ ServerSocket::~ServerSocket()
 }
 
 void
-ServerSocket::disconnection( const std::weak_ptr< ClientSocket > & socket )
+ServerSocket::disconnection( std::shared_ptr< ClientSocket > socket )
 {
-	std::cout << "disconnection" << std::endl;
+	std::lock_guard< std::mutex > lock( d->m_mutex );
 
-	std::shared_ptr< ClientSocket > sp = socket.lock();
+	auto it = std::find( d->m_clients.begin(), d->m_clients.end(),
+		socket );
 
-	if( sp )
-	{
-		std::lock_guard< std::mutex > lock( d->m_mutex );
+	if( it != d->m_clients.end() )
+		d->m_clients.erase( it );
 
-		auto it = std::find( d->m_clients.begin(), d->m_clients.end(),
-			sp );
-
-		if( it != d->m_clients.end() )
-			d->m_clients.erase( it );
-
-		sp->stop( sp );
-	}
+	socket->stop( socket );
 }
 
 void
-ServerSocket::sendListOfSources( const std::weak_ptr< ClientSocket > & socket )
+ServerSocket::sendListOfSources( std::shared_ptr< ClientSocket > socket )
 {
 	d->sendListOfSources( socket );
 }

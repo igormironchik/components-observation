@@ -34,8 +34,6 @@
 #include <Como/private/Protocol>
 #include <Como/private/Messages>
 
-#include <QDebug>
-
 
 namespace Como {
 
@@ -162,7 +160,6 @@ ClientSocket::slotReadyRead()
 void
 ClientSocket::handleErrorInReadMessage()
 {
-	qDebug() << "handleErrorInReadMessage";
 	d->m_buf.clear();
 	close();
 }

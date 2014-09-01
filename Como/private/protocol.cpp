@@ -43,7 +43,6 @@
 
 // Qt include.
 #include <QDataStream>
-#include <QDebug>
 
 
 namespace Como {
@@ -134,8 +133,6 @@ Protocol::writeMessage( const Message & msg )
 	dataStream << c_magicNumber << msg.type() << msgDataSize;
 	dataStream.writeRawData( msgData->constData(), msgDataSize );
 
-	qDebug() << *data.data();
-
 	return data;
 }
 
@@ -143,21 +140,20 @@ Protocol::writeMessage( const Message & msg )
 
 static inline QDateTime parseDateTime( const std::string & v )
 {
-	static const std::regex reg( "(\\d{4})-(\\d{2})-(\\d{2})T"
-		"(\\d{2}):(\\d{2}):(\\d{2}),(\\d{9})" );
+	static const std::regex reg( "^(\\d{4})-(\\d{2})-(\\d{2})T"
+		"(\\d{2}):(\\d{2}):(\\d{2})" );
 
 	std::smatch match;
 
-	if( std::regex_match( v, match, reg ) )
+	if( std::regex_match( v, match, reg ) && match.size() == 7 )
 	{
-		const QDate date( std::atoi( match[ 0 ].str().c_str() ),
-			std::atoi( match[ 1 ].str().c_str() ),
-			std::atoi( match[ 2 ].str().c_str() ) );
+		const QDate date( std::atoi( match[ 1 ].str().c_str() ),
+			std::atoi( match[ 2 ].str().c_str() ),
+			std::atoi( match[ 3 ].str().c_str() ) );
 
-		const QTime time( std::atoi( match[ 3 ].str().c_str() ),
-			std::atoi( match[ 4 ].str().c_str() ),
+		const QTime time( std::atoi( match[ 4 ].str().c_str() ),
 			std::atoi( match[ 5 ].str().c_str() ),
-			std::atoi( match[ 6 ].str().c_str() ) / 1000000 );
+			std::atoi( match[ 6 ].str().c_str() ) );
 
 		return QDateTime( date, time );
 	}
@@ -231,8 +227,6 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 
 	dataStream >> magicNumber >> messageType >> messageLength;
 
-	qDebug() << magicNumber << messageType << messageLength;
-
 	if( messageType != GetListOfSourcesMessage::messageType &&
 		messageType != SourceMessage::messageType &&
 		messageType != DeinitSourceMessage::messageType )
@@ -248,10 +242,12 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 
 		dataStream.readRawData( data.data(), messageLength );
 
+		bytesRead = c_headerSize + messageLength;
+
 		ComoMessage msg;
 
 		if( msg.ParseFromArray( data.constData(), messageLength ) )
-		{
+		{	
 			switch( messageType )
 			{
 				case GetListOfSourcesMessage::messageType :
@@ -271,11 +267,7 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 			}
 		}
 		else
-		{
-			qDebug() << "protobuf parsing failed";
-
 			throw GarbageReceivedException();
-		}
 #elif // COMO_BOOST_PROTOBUF
 
 		throw GarbageReceivedException();
