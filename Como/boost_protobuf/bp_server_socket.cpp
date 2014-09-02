@@ -36,7 +36,6 @@
 #include <Como/boost_protobuf/bp_client_socket.hpp>
 
 // boost include.
-#include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/placeholders.hpp>
 #include <boost/bind.hpp>
 
@@ -61,9 +60,9 @@ class ServerSocketPrivate {
 public:
 	ServerSocketPrivate( ServerSocket * parent,
 		boost::asio::io_service & io,
-		unsigned short portNum )
+		const tcp::endpoint & endpoint )
 		:	m_parent( parent )
-		,	m_acceptor( io, tcp::endpoint( tcp::v4(), portNum ) )
+		,	m_acceptor( io, endpoint )
 	{
 	}
 
@@ -153,8 +152,8 @@ public:
 //
 
 ServerSocket::ServerSocket( boost::asio::io_service & io,
-	unsigned short portNum )
-	:	d( new ServerSocketPrivate( this, io, portNum ) )
+	const tcp::endpoint & endpoint )
+	:	d( new ServerSocketPrivate( this, io, endpoint ) )
 {
 	d->startAcceptNewConnection();
 }

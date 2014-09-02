@@ -42,6 +42,8 @@
 
 
 using namespace Como::BoostProtobuf;
+using namespace boost::asio::ip;
+
 
 //
 // Sources
@@ -113,7 +115,7 @@ void runSources( ServerSocket * server )
 int main( int, char ** )
 {
 	boost::asio::io_service service;
-	ServerSocket server( service, 4545 );
+	ServerSocket server( service, tcp::endpoint( tcp::v4(), 4545 ) );
 
 	std::thread t( runSources, &server );
 

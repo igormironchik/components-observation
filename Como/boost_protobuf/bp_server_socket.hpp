@@ -38,6 +38,7 @@
 
 // boost include.
 #include <boost/asio/io_service.hpp>
+#include <boost/asio/ip/tcp.hpp>
 
 
 namespace Como {
@@ -66,7 +67,7 @@ class ServerSocket
 {
 public:
 	ServerSocket( boost::asio::io_service & io,
-		unsigned short portNum );
+		const boost::asio::ip::tcp::endpoint & endpoint );
 
 	~ServerSocket();
 
