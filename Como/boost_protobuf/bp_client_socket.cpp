@@ -43,6 +43,7 @@
 #include <sstream>
 #include <atomic>
 #include <algorithm>
+#include <mutex>
 
 // boost include.
 #include <boost/asio.hpp>
@@ -202,6 +203,8 @@ public:
 	void readMessage( std::size_t length,
 		std::shared_ptr< ClientSocket > socket )
 	{
+		std::lock_guard< std::mutex > lock( m_mutex );
+
 		std::vector< char > buf( length, 0x00u );
 		m_readBuffers.emplace_back( buf );
 
@@ -212,7 +215,11 @@ public:
 					if( error )
 						m_server->disconnection( socket );
 					else
+					{
+						std::lock_guard< std::mutex > lock( m_mutex );
+
 						m_readBuffers.pop_front();
+					}
 				}
 		);
 	}
@@ -242,6 +249,9 @@ public:
 
 		std::vector< char > buf( data.length(), 0x00u );
 		std::copy( data.begin(), data.end(), buf.begin() );
+
+		std::lock_guard< std::mutex > lock( m_mutex );
+
 		m_writeBuffers.emplace_back( buf );
 
 		boost::asio::async_write( socket->socket(),
@@ -251,7 +261,11 @@ public:
 					if( error )
 						m_server->disconnection( socket );
 					else
+					{
+						std::lock_guard< std::mutex > lock( m_mutex );
+
 						m_writeBuffers.pop_front();
+					}
 				}
 		);
 	}
@@ -266,6 +280,8 @@ public:
 	std::list< std::vector< char > > m_readBuffers;
 	//! Write bufer.
 	std::list< std::vector< char > > m_writeBuffers;
+	//! Mutex.
+	std::mutex m_mutex;
 }; // class ClientSocketPrivate;
 
 
@@ -295,6 +311,9 @@ ClientSocket::start( std::shared_ptr< ClientSocket > socket )
 	if( d->m_socket.is_open() )
 	{
 		std::vector< char > buf( c_headerSize, 0x00u );
+
+		std::lock_guard< std::mutex > lock( d->m_mutex );
+
 		d->m_readBuffers.emplace_back( buf );
 
 		boost::asio::async_read( d->m_socket,
@@ -309,7 +328,11 @@ ClientSocket::start( std::shared_ptr< ClientSocket > socket )
 							d->parseHeaderAndNotifyServer(
 								d->m_readBuffers.front().data(), socket );
 
-						d->m_readBuffers.pop_front();
+						{
+							std::lock_guard< std::mutex > lock( d->m_mutex );
+
+							d->m_readBuffers.pop_front();
+						}
 
 						if( headerParsed &&	d->m_socket.is_open() )
 							start( socket );
