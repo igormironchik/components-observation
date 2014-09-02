@@ -8,6 +8,8 @@ CONFIG += console
 CONFIG -= qt
 LIBS += -L../../lib -lComo -llibprotobuf
 
-DEFINES += COMO_BOOST_PROTOBUF
-
 SOURCES += main.cpp
+
+exists( ../../como_defines.pri ) {
+    include( ../../como_defines.pri )
+}

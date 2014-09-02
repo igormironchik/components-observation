@@ -17,3 +17,7 @@ SOURCES += first_thread.cpp \
            second_thread.cpp \
            third_thread.cpp \
            main.cpp
+           
+exists( ../../como_defines.pri ) {
+    include( ../../como_defines.pri )
+}

@@ -8,8 +8,6 @@ CONFIG += staticlib
 QT -= gui
 QT += network
 
-DEFINES += COMO_BOOST_PROTOBUF
-
 HEADERS += client_socket.hpp \
            server_socket.hpp \
            source.hpp \
@@ -23,6 +21,10 @@ SOURCES += client_socket.cpp \
            private/buffer.cpp \
            private/messages.cpp \
            private/protocol.cpp
+           
+exists( ../como_defines.pri ) {
+    include( ../como_defines.pri )
+}
 
 contains( DEFINES, COMO_BOOST_PROTOBUF ) {
     include( boost_protobuf/boost_protobuf.pri )
