@@ -15,7 +15,7 @@ PRE_TARGETDEPS += $$PWD/messages.pb.cc $$PWD/messages.pb.h
 QMAKE_EXTRA_TARGETS += protobufc protobufh
 
 protobufc.target = $$PWD/messages.pb.cc
-protobufc.depends = FORCE
+protobufc.depends = $$PWD/messages.proto
 protobufc.commands = protoc --proto_path=$$PWD --cpp_out=$$PWD $$PWD/messages.proto
 
 protobufh.target = $$PWD/messages.pb.h
