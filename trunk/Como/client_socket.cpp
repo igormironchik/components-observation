@@ -64,6 +64,20 @@ ClientSocket::~ClientSocket()
 }
 
 void
+ClientSocket::connectTo( const QHostAddress & address, quint16 port )
+{
+	if( state() == QAbstractSocket::UnconnectedState )
+		connectToHost( address, port );
+}
+
+void
+ClientSocket::disconnectFrom()
+{
+	if( state() != QAbstractSocket::UnconnectedState )
+		disconnectFromHost();
+}
+
+void
 ClientSocket::sendSourceMessage( const Source & source )
 {
 	SourceMessage msg( source );

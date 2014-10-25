@@ -73,6 +73,13 @@ public:
 	ClientSocket( QObject * parent = 0 );
 	~ClientSocket();
 
+public slots:
+	//! Connect to host.
+	void connectTo( const QHostAddress & address, quint16 port );
+
+	//! Disconnect from host.
+	void disconnectFrom();
+
 	//! Send information about source.
 	void sendSourceMessage( const Source & source );
 
