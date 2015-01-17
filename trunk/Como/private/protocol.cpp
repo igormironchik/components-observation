@@ -32,15 +32,6 @@
 #include <Como/private/Protocol>
 #include <Como/private/Messages>
 
-#ifdef COMO_BOOST_PROTOBUF
-#include <Como/boost_protobuf/messages.pb.h>
-
-// C++ include.
-#include <string>
-#include <regex>
-#include <cstdlib>
-#endif
-
 // Qt include.
 #include <QDataStream>
 
@@ -105,9 +96,6 @@ NotEnoughDataReceivedException::~NotEnoughDataReceivedException()
 //! Magic number for the Como protocol #1.
 static const quint64 c_magicNumber = 0x434F4D4F50524F31;
 
-//! Magic number for the Como protocol #2.
-static const quint64 c_magicNumber2 = 0x434F4D4F50524F32;
-
 /*!
 	Message's header size. 12 bytes.
 
@@ -136,82 +124,6 @@ Protocol::writeMessage( const Message & msg )
 	return data;
 }
 
-#ifdef COMO_BOOST_PROTOBUF
-
-static inline QDateTime parseDateTime( const std::string & v )
-{
-	static const std::regex reg( "^(\\d{4})-(\\d{2})-(\\d{2})T"
-		"(\\d{2}):(\\d{2}):(\\d{2})" );
-
-	std::smatch match;
-
-	if( std::regex_match( v, match, reg ) && match.size() == 7 )
-	{
-		const QDate date( std::atoi( match[ 1 ].str().c_str() ),
-			std::atoi( match[ 2 ].str().c_str() ),
-			std::atoi( match[ 3 ].str().c_str() ) );
-
-		const QTime time( std::atoi( match[ 4 ].str().c_str() ),
-			std::atoi( match[ 5 ].str().c_str() ),
-			std::atoi( match[ 6 ].str().c_str() ) );
-
-		return QDateTime( date, time );
-	}
-	else
-		return QDateTime::currentDateTime();
-}
-
-static inline QVariant parseValue( const std::string & v, Source::Type type )
-{
-	switch( type )
-	{
-		case Source::String :
-			return QVariant( QString( v.c_str() ) );
-
-		case Source::Int :
-			return QVariant( std::atoi( v.c_str() ) );
-
-		case Source::UInt :
-			return QVariant( (unsigned int) std::atol( v.c_str() ) );
-
-		case Source::LongLong :
-			return QVariant( std::atoll( v.c_str() ) );
-
-		case Source::ULongLong :
-		{
-			char * end;
-			return QVariant( std::strtoull( v.c_str(), &end, 10 ) );
-		}
-
-		case Source::Double :
-			return QVariant( std::atof( v.c_str() ) );
-
-		case Source::DateTime :
-			return QVariant( parseDateTime( v ) );
-
-		case Source::Time :
-			return QVariant( parseDateTime( v ).time() );
-
-		default :
-			return QVariant();
-	}
-}
-
-static inline Source parseSource( const ComoMessage & msg )
-{
-	Source source( ( Source::Type ) msg.type(),
-		QString( msg.name().c_str() ),
-		QString( msg.typename_().c_str() ),
-		parseValue( msg.value(), ( Source::Type ) msg.type() ),
-		QString( msg.description().c_str() ) );
-
-	source.setDateTime( parseDateTime( msg.datetime() ) );
-
-	return source;
-}
-
-#endif // COMO_BOOST_PROTOBUF
-
 QSharedPointer< Message >
 Protocol::readMessage( const QByteArray & data, int & bytesRead )
 {
@@ -227,90 +139,54 @@ Protocol::readMessage( const QByteArray & data, int & bytesRead )
 
 	dataStream >> magicNumber >> messageType >> messageLength;
 
-	if( messageType != GetListOfSourcesMessage::messageType &&
-		messageType != SourceMessage::messageType &&
-		messageType != DeinitSourceMessage::messageType )
+	switch( messageType )
+	{
+		case GetListOfSourcesMessage::messageType :
+		case SourceMessage::messageType :
+		case DeinitSourceMessage::messageType :
+			break;
+
+		default :
 			throw GarbageReceivedException();
+	}
+
+	if( magicNumber != c_magicNumber )
+		throw GarbageReceivedException();
 
 	if( data.size() < c_headerSize + messageLength )
 		throw NotEnoughDataReceivedException();
 
-	if( magicNumber == c_magicNumber2 )
+	QByteArray msgData( messageLength, 0x00 );
+
+	dataStream.readRawData( msgData.data(), messageLength );
+
+	bytesRead = c_headerSize + messageLength;
+
+	QSharedPointer < Message > msg;
+
+	switch( messageType )
 	{
-#ifdef COMO_BOOST_PROTOBUF
-		QByteArray data( messageLength, 0x00 );
+		case GetListOfSourcesMessage::messageType :
+		{
+			msg = QSharedPointer< Message > ( new GetListOfSourcesMessage );
+		} break;
+		case SourceMessage::messageType :
+		{
+			msg = QSharedPointer< Message > ( new SourceMessage );
+		} break;
+		case DeinitSourceMessage::messageType :
+		{
+			msg = QSharedPointer< Message > ( new DeinitSourceMessage );
+		} break;
 
-		dataStream.readRawData( data.data(), messageLength );
+		default :
+			return QSharedPointer < Message > ();
+	}
 
-		bytesRead = c_headerSize + messageLength;
-
-		ComoMessage msg;
-
-		if( msg.ParseFromArray( data.constData(), messageLength ) )
-		{	
-			switch( messageType )
-			{
-				case GetListOfSourcesMessage::messageType :
-					return QSharedPointer< Message > (
-						new GetListOfSourcesMessage );
-
-				case SourceMessage::messageType :
-					return QSharedPointer< Message > (
-						new SourceMessage( parseSource( msg ) ) );
-
-				case DeinitSourceMessage::messageType :
-					return QSharedPointer< Message > (
-						new DeinitSourceMessage( parseSource( msg ) ) );
-
-				default :
-					throw GarbageReceivedException();
-			}
-		}
-		else
-			throw GarbageReceivedException();
-#else // COMO_BOOST_PROTOBUF
-
+	if( !msg->deserialize( msgData ) )
 		throw GarbageReceivedException();
 
-#endif // COMO_BOOST_PROTOBUF
-	}
-	else
-	{
-		if( magicNumber != c_magicNumber )
-			throw GarbageReceivedException();
-
-		QByteArray msgData( messageLength, 0x00 );
-
-		dataStream.readRawData( msgData.data(), messageLength );
-
-		bytesRead = c_headerSize + messageLength;
-
-		QSharedPointer < Message > msg;
-
-		switch( messageType )
-		{
-			case GetListOfSourcesMessage::messageType :
-			{
-				msg = QSharedPointer< Message > ( new GetListOfSourcesMessage );
-			} break;
-			case SourceMessage::messageType :
-			{
-				msg = QSharedPointer< Message > ( new SourceMessage );
-			} break;
-			case DeinitSourceMessage::messageType :
-			{
-				msg = QSharedPointer< Message > ( new DeinitSourceMessage );
-			} break;
-
-			default :
-				return QSharedPointer < Message > ();
-		}
-
-		if( !msg->deserialize( msgData ) )
-			throw GarbageReceivedException();
-
-		return msg;
-	}
+	return msg;
 }
 
 } /* namespace Como */
