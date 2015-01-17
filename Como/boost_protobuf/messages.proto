@@ -1,9 +1,0 @@
-
-message ComoMessage {
-	required uint32 type = 1;
-	required string name = 2;
-	required string typeName = 3;
-	required string dateTime = 4;
-	required string description = 5;
-	required string value = 6;
-}

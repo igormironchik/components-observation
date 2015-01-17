@@ -50,7 +50,7 @@ class Source;
 	information about Source changes on the server
 	side from ServerSocket.
 
-	Don't forget register Source metatype information in Qt with:
+	Don't forget register Source meta-type information in Qt with:
 
 	\code
 	qRegisterMetaType< Como::Source > ( "Como::Source" );
@@ -66,7 +66,7 @@ signals:
 	void sourceHasUpdatedValue( const Como::Source & );
 	//! GetListOfSourcesMessage request received
 	void getListOfSourcesMessageReceived();
-	//! Deintitialization of the source.
+	//! De-initialization of the source.
 	void sourceDeinitialized( const Como::Source & );
 
 public:
@@ -86,7 +86,7 @@ public slots:
 	//! Send request to receive all available sources.
 	void sendGetListOfSourcesMessage();
 
-	//! Send information about deinitialization of the source.
+	//! Send information about de-initialization of the source.
 	void sendDeinitSourceMessage( const Source & source );
 
 private:
