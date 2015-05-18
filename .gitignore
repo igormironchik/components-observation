@@ -3,3 +3,5 @@
 /**/release/
 /lib/
 /**/Makefile*
+/**/*.o
+/**/moc_*.cpp

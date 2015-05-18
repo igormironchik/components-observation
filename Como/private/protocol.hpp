@@ -58,7 +58,7 @@ class ProtocolException
 {
 public:
 	explicit ProtocolException( const QString & what );
-	virtual ~ProtocolException();
+	virtual ~ProtocolException() throw();
 
 	//! \return Reason of the exception.
 	const QString & whatAsQString() const;
@@ -79,7 +79,7 @@ class GarbageReceivedException
 {
 public:
 	GarbageReceivedException();
-	virtual ~GarbageReceivedException();
+	virtual ~GarbageReceivedException() throw();
 }; // class GarbageReceivedException
 
 
@@ -93,7 +93,7 @@ class NotEnoughDataReceivedException
 {
 public:
 	NotEnoughDataReceivedException();
-	virtual ~NotEnoughDataReceivedException();
+	virtual ~NotEnoughDataReceivedException() throw();
 }; // class NotEnoughDataReceivedException
 
 

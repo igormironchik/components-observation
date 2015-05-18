@@ -50,7 +50,7 @@ ProtocolException::ProtocolException( const QString & what )
 {
 }
 
-ProtocolException::~ProtocolException()
+ProtocolException::~ProtocolException() throw()
 {
 }
 
@@ -70,7 +70,7 @@ GarbageReceivedException::GarbageReceivedException()
 {
 }
 
-GarbageReceivedException::~GarbageReceivedException()
+GarbageReceivedException::~GarbageReceivedException() throw()
 {
 }
 
@@ -84,7 +84,7 @@ NotEnoughDataReceivedException::NotEnoughDataReceivedException()
 {
 }
 
-NotEnoughDataReceivedException::~NotEnoughDataReceivedException()
+NotEnoughDataReceivedException::~NotEnoughDataReceivedException() throw()
 {
 }
 

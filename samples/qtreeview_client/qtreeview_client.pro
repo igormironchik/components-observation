@@ -6,7 +6,7 @@ DEPENDPATH += . ../..
 INCLUDEPATH += . ../..
 CONFIG += windows
 QT += network gui widgets
-LIBS += -L../../lib -lComo -llibprotobuf
+LIBS += -L../../lib -lComo
 
 HEADERS += treeview.hpp \
            mainwindow.hpp \

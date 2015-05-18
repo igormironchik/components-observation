@@ -42,9 +42,9 @@ namespace Como {
 Source::Source( QObject * parent )
 	:	QObject( parent )
 	,	m_type( Int )
-	,	m_value( QVariant( (int) 0 ) )
 	,	m_serverSocket( 0 )
 	,	m_dateTime( QDateTime::currentDateTime() )
+	,	m_value( QVariant( (int) 0 ) )
 {
 }
 
@@ -72,7 +72,8 @@ Source::~Source()
 }
 
 Source::Source( const Source & other )
-	:	m_type( other.type() )
+	:	QObject( 0 )
+	,	m_type( other.type() )
 	,	m_name( other.name() )
 	,	m_typeName( other.typeName() )
 	,	m_serverSocket( 0 )

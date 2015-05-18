@@ -165,7 +165,7 @@ ServerSocket::deinitSource( const Source & source )
 }
 
 void
-ServerSocket::incomingConnection( int socketDescriptor )
+ServerSocket::incomingConnection( qintptr socketDescriptor )
 {
 	ClientSocket * socket = new ClientSocket( this );
 

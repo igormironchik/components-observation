@@ -115,5 +115,5 @@ void
 MainWindow::slotDisconnected()
 {
 	d->m_model->clear();
-	d->m_socket->connectToHost( QHostAddress::LocalHost, 4545 );
+	d->m_socket->connectTo( QHostAddress::LocalHost, 4545 );
 }

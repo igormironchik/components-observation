@@ -58,7 +58,7 @@ int main( int argc, char ** argv )
 	secondThread.start();
 	thirdThread.start();
 
-	socket.listen( QHostAddress::Any, 4545 );
+	socket.listen( QHostAddress::LocalHost, 4545 );
 
 	return app.exec();
 }

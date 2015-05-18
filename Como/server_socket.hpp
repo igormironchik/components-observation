@@ -93,7 +93,7 @@ public:
 
 protected:
 	//!	Process new incoming connection.
-	void incomingConnection( int socketDescriptor );
+	void incomingConnection( qintptr socketDescriptor );
 	//! Custom event.
 	void customEvent( QEvent * e );
 
