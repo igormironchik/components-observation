@@ -35,7 +35,6 @@
 #include <QDateTime>
 #include <QString>
 #include <QVariant>
-#include <QObject>
 #include <QMetaType>
 
 
@@ -59,15 +58,7 @@ class ServerSocket;
 	qRegisterMetaType< Como::Source > ( "Como::Source" );
 	\endcode
 */
-class Source
-	:	public QObject
-{
-	Q_OBJECT
-
-signals:
-	//! Emitted when source change his value.
-	void valueChanged( const QVariant& );
-
+class Source Q_DECL_FINAL {
 public:
 	//! Type of the source.
 	enum Type {
@@ -90,7 +81,7 @@ public:
 	}; /* enum Type */
 
 	//! Type of the source will be Int.
-	Source( QObject * parent = 0 );
+	Source();
 
 	Source(
 		//! Type of the source.
@@ -107,21 +98,17 @@ public:
 			Server socket. If not null then source will
 			send out the information about itself.
 		*/
-		ServerSocket * serverSocket = 0,
-		//! Parent object.
-		QObject * parent = 0 );
+		ServerSocket * serverSocket = Q_NULLPTR );
 
-	virtual ~Source();
+	~Source();
 
 	/*!
-		Be careful, m_serverSocket will not copied and
-		QObject::parent will set to NULL.
+		Be careful, m_serverSocket will not copied.
 	*/
 	Source( const Source & other );
 
 	/*!
-		Be careful, m_serverSocket will not copied and
-		QObject::parent will not change.
+		Be careful, m_serverSocket will not copied.
 	*/
 	Source & operator = ( const Source & other );
 
@@ -132,7 +119,7 @@ public:
 		initialize his internal state and send message
 		to all clients about new source.
 	*/
-	virtual void initSource();
+	void initSource();
 
 	/*!
 		Deinit server socket with this source.
@@ -142,7 +129,7 @@ public:
 		source and send message to all clients
 		about source deinitialization.
 	*/
-	virtual void deinitSource();
+	void deinitSource();
 
 	//! \return Value of the source.
 	const QVariant & value() const;
@@ -151,8 +138,6 @@ public:
 		constructor then information will send out.
 
 		m_dateTime updates automatically to current system date and time.
-
-		Emit valueChanged( const QVariant& ).
 	*/
 	void setValue( const QVariant & v );
 

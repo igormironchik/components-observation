@@ -36,6 +36,7 @@
 
 // Qt include.
 #include <QTimer>
+#include <QScopedPointer>
 
 
 //
@@ -56,10 +57,9 @@ struct ThirdObject::ThirdObjectPrivate {
 
 	~ThirdObjectPrivate()
 	{
-		m_source->deleteLater();
 	}
 
-	Como::Source * m_source;
+	QScopedPointer< Como::Source > m_source;
 	Como::ServerSocket * m_socket;
 }; // struct ThirdObject::ThirdObjectPrivate
 
@@ -85,13 +85,13 @@ ThirdObject::~ThirdObject()
 void
 ThirdObject::slotSwitchToStateOne()
 {
-	d->m_source = new Como::Source( Como::Source::String,
+	d->m_source.reset( new Como::Source( Como::Source::String,
 		QString( "ThirdObject" ),
 		QString( "DynamicSource" ),
 		QVariant( QString( "I'm alive" ) ),
 		QString( "This is example of usage\n"
 			"Como::Source::String as dynamic source." ),
-		d->m_socket );
+		d->m_socket ) );
 
 	QTimer::singleShot( c_delay, this, SLOT( slotSwitchToStateTwo() ) );
 }
@@ -107,8 +107,7 @@ ThirdObject::slotSwitchToStateTwo()
 void
 ThirdObject::slotSwitchToStateThree()
 {
-	d->m_source->deleteLater();
-	d->m_source = 0;
+	d->m_source.reset();
 
 	QTimer::singleShot( c_delay, this, SLOT( slotSwitchToStateOne() ) );
 }

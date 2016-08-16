@@ -35,14 +35,14 @@
 
 namespace Como {
 
+
 //
 // Source
 //
 
-Source::Source( QObject * parent )
-	:	QObject( parent )
-	,	m_type( Int )
-	,	m_serverSocket( 0 )
+Source::Source()
+	:	m_type( Int )
+	,	m_serverSocket( Q_NULLPTR )
 	,	m_dateTime( QDateTime::currentDateTime() )
 	,	m_value( QVariant( (int) 0 ) )
 {
@@ -52,10 +52,8 @@ Source::Source( Type type, const QString & name,
 	const QString & typeName,
 	const QVariant & value,
 	const QString & desc,
-	ServerSocket * serverSocket,
-	QObject * parent )
-	:	QObject( parent )
-	,	m_type( type )
+	ServerSocket * serverSocket )
+	:	m_type( type )
 	,	m_name( name )
 	,	m_typeName( typeName )
 	,	m_serverSocket( serverSocket )
@@ -72,11 +70,10 @@ Source::~Source()
 }
 
 Source::Source( const Source & other )
-	:	QObject( 0 )
-	,	m_type( other.type() )
+	:	m_type( other.type() )
 	,	m_name( other.name() )
 	,	m_typeName( other.typeName() )
-	,	m_serverSocket( 0 )
+	,	m_serverSocket( Q_NULLPTR )
 	,	m_dateTime( other.dateTime() )
 	,	m_desc( other.description() )
 	,	m_value( other.value() )
@@ -91,7 +88,7 @@ Source::operator = ( const Source & other )
 		m_type = other.type();
 		m_name = other.name();
 		m_typeName = other.typeName();
-		m_serverSocket = 0;
+		m_serverSocket = Q_NULLPTR;
 		m_dateTime = other.dateTime();
 		m_desc = other.description();
 		m_value = other.value();
@@ -130,8 +127,6 @@ Source::setValue( const QVariant & v )
 
 	if( m_serverSocket )
 		m_serverSocket->updateSource( *this );
-
-	emit valueChanged( m_value );
 }
 
 const QDateTime &

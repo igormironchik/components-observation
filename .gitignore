@@ -3,6 +3,7 @@
 /**/release/
 /**/Makefile*
 /**/*.o
+/**/*.user
 /**/moc_*.cpp
 /**/*.a
 /**/*.lib
