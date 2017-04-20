@@ -197,7 +197,7 @@ ServerSocket::customEvent( QEvent * e )
 	if( e->type() == SourceHasUpdatedValueEventType )
 	{
 		SourceHasUpdatedValueEvent * updateEvent =
-			dynamic_cast< SourceHasUpdatedValueEvent* > ( e );
+			static_cast< SourceHasUpdatedValueEvent* > ( e );
 
 		notifyAllClientsAboutValueChange( updateEvent->source() );
 
@@ -206,7 +206,7 @@ ServerSocket::customEvent( QEvent * e )
 	else if( e->type() == SourceHasDeinitializedEventType )
 	{
 		SourceHasDeinitializedEvent * deinitEvent =
-			dynamic_cast< SourceHasDeinitializedEvent* > ( e );
+			static_cast< SourceHasDeinitializedEvent* > ( e );
 
 		notifyAllClientsAboutDeinitSource( deinitEvent->source() );
 

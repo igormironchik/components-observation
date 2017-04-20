@@ -142,7 +142,7 @@ ClientSocket::slotReadyRead()
 					case SourceMessage::messageType :
 					{
 						SourceMessage * sourceMsg =
-							dynamic_cast< SourceMessage* > ( msg.data() );
+							static_cast< SourceMessage* > ( msg.data() );
 
 						emit sourceHasUpdatedValue( sourceMsg->source() );
 					} break;
@@ -150,7 +150,7 @@ ClientSocket::slotReadyRead()
 					case DeinitSourceMessage::messageType :
 					{
 						DeinitSourceMessage * deinitMsg =
-							dynamic_cast< DeinitSourceMessage* > ( msg.data() );
+							static_cast< DeinitSourceMessage* > ( msg.data() );
 
 						emit sourceDeinitialized( deinitMsg->source() );
 					} break;
