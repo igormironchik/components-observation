@@ -56,7 +56,7 @@ public:
 		QObject * parent = 0 );
 	~Model();
 
-	//! \return Color for the item with \arg index.
+	//! \return Color for the item with index.
 	QColor color( const QModelIndex & index );
 
 	//! Clear model.

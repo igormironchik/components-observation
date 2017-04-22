@@ -52,7 +52,7 @@ public:
 	//! Write data to the end of the buffer.
 	void write( const QByteArray & data );
 
-	//! Remove first \arg bytes bytes from the beginning of the buffer.
+	//! Remove first bytes from the beginning of the buffer.
 	void remove( int bytes );
 
 	//! Clear the buffer.
