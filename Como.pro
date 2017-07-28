@@ -9,3 +9,5 @@ samples.depends = Como
 libDir.commands = mkdir lib
 
 QMAKE_EXTRA_TARGETS += libDir
+
+OTHER_FILES = README.md
