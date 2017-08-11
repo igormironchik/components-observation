@@ -119,11 +119,9 @@ ClientSocket::slotReadyRead()
 	d->m_buf.write( readAll() );
 
 	try {
-		int bytesRead = 0;
-
 		while( !d->m_buf.isEmpty() )
 		{
-			bytesRead = 0;
+			int bytesRead = 0;
 
 			QSharedPointer< Message > msg =
 				Protocol::readMessage( d->m_buf.data(), bytesRead );

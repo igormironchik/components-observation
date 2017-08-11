@@ -43,7 +43,7 @@
 //
 
 struct FirstObject::FirstObjectPrivate {
-	FirstObjectPrivate( Como::ServerSocket * socket )
+	explicit FirstObjectPrivate( Como::ServerSocket * socket )
 		:	m_source( Como::Source::String,
 				QString( "FirstObject" ),
 				QString( "StringSource" ),

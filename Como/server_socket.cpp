@@ -54,7 +54,7 @@ class SourceHasUpdatedValueEvent
 	:	public QEvent
 {
 public:
-	SourceHasUpdatedValueEvent( const Source & source )
+	explicit SourceHasUpdatedValueEvent( const Source & source )
 		:	QEvent( static_cast< QEvent::Type > ( SourceHasUpdatedValueEventType ) )
 		,	m_source( source )
 	{
@@ -81,7 +81,7 @@ class SourceHasDeinitializedEvent
 	:	public QEvent
 {
 public:
-	SourceHasDeinitializedEvent( const Source & source )
+	explicit SourceHasDeinitializedEvent( const Source & source )
 		:	QEvent( static_cast< QEvent::Type > ( SourceHasDeinitializedEventType ) )
 		,	m_source( source )
 	{

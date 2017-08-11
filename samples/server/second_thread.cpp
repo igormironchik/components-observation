@@ -43,7 +43,7 @@
 //
 
 struct SecondObject::SecondObjectPrivate {
-	SecondObjectPrivate( Como::ServerSocket * socket )
+	explicit SecondObjectPrivate( Como::ServerSocket * socket )
 		:	m_source( Como::Source::Int,
 				QString( "SecondObject" ),
 				QString( "IntSource" ),

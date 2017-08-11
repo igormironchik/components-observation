@@ -44,7 +44,7 @@
 //
 
 struct ThirdObject::ThirdObjectPrivate {
-	ThirdObjectPrivate( Como::ServerSocket * socket )
+	explicit ThirdObjectPrivate( Como::ServerSocket * socket )
 		:	m_source( new Como::Source( Como::Source::String,
 				QString( "ThirdObject" ),
 				QString( "DynamicSource" ),

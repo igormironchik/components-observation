@@ -49,7 +49,7 @@
 //
 
 struct MainWindow::MainWindowPrivate {
-	MainWindowPrivate( Como::ClientSocket * socket )
+	explicit MainWindowPrivate( Como::ClientSocket * socket )
 		:	m_socket( socket )
 		,	m_model( 0 )
 	{}
