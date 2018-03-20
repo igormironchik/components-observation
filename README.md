@@ -1,3 +1,5 @@
+[![Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/imironchik/donate)
+
 Library for Remote Monitoring of Application Components (Como).
 
 This library is intended to provide a simple and convenient interface for remote
