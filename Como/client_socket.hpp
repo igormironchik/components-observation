@@ -81,13 +81,13 @@ public slots:
 	void disconnectFrom();
 
 	//! Send information about source.
-	void sendSourceMessage( const Source & source );
+	void sendSourceMessage( const Como::Source & source );
 
 	//! Send request to receive all available sources.
 	void sendGetListOfSourcesMessage();
 
 	//! Send information about de-initialization of the source.
-	void sendDeinitSourceMessage( const Source & source );
+	void sendDeinitSourceMessage( const Como::Source & source );
 
 private:
 	//! Handle errors in read message.

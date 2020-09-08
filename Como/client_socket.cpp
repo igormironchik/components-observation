@@ -78,7 +78,7 @@ ClientSocket::disconnectFrom()
 }
 
 void
-ClientSocket::sendSourceMessage( const Source & source )
+ClientSocket::sendSourceMessage( const Como::Source & source )
 {
 	SourceMessage msg( source );
 
@@ -102,7 +102,7 @@ ClientSocket::sendGetListOfSourcesMessage()
 }
 
 void
-ClientSocket::sendDeinitSourceMessage( const Source & source )
+ClientSocket::sendDeinitSourceMessage( const Como::Source & source )
 {
 	DeinitSourceMessage msg( source );
 
