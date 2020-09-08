@@ -35,6 +35,9 @@
 #include <QString>
 #include <QList>
 
+// C++ include.
+#include <algorithm>
+
 
 //
 // Model::ModelPrivate
@@ -333,12 +336,12 @@ Model::sort( int column, Qt::SortOrder order )
 	if( order == Qt::AscendingOrder )
 	{
 		SourceLessThenFunction func( column );
-		qSort( d->m_data.begin(), d->m_data.end(), func );
+		std::sort( d->m_data.begin(), d->m_data.end(), func );
 	}
 	else
 	{
 		SourceGreaterThenFunction func( column );
-		qSort( d->m_data.begin(), d->m_data.end(), func );
+		std::sort( d->m_data.begin(), d->m_data.end(), func );
 	}
 
 	emit layoutChanged();

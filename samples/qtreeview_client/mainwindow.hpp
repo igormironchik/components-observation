@@ -53,7 +53,7 @@ class MainWindow
 
 public:
 	explicit MainWindow( Como::ClientSocket * socket,
-		QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+		QWidget * parent = 0, Qt::WindowFlags flags = Qt::WindowFlags() );
 	~MainWindow();
 
 private slots:
