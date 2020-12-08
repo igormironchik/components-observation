@@ -33,6 +33,7 @@
 
 // Qt include.
 #include <QDataStream>
+#include <QIODevice>
 
 
 namespace Como {
