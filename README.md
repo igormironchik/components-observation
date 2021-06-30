@@ -36,4 +36,4 @@ There is an application for viewing Como sources [Globe](https://github.com/igor
 
 # Donate
 
-[Donate with BTC](https://github.com/igormironchik)
+[![](bitcoin-btc-logo-full.png)](https://github.com/igormironchik)
