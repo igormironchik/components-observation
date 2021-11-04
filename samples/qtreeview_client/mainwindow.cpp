@@ -81,7 +81,7 @@ MainWindow::init()
 	QMenu * fileMenu = menuBar()->addMenu( tr( "File" ) );
 	QAction * quitAction =
 		fileMenu->addAction( tr( "Quit" ), this, SLOT( slotQuit() ) );
-	quitAction->setShortcut( Qt::CTRL + Qt::Key_Q );
+	quitAction->setShortcut( Qt::CTRL | Qt::Key_Q );
 
 	d->m_model = new Model( d->m_socket, this );
 
