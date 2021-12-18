@@ -33,7 +33,3 @@ class Como::ServerSocket. Como::ServerSocket class is thread-safe.
 In fact it is all you need to know to start using the library Como.
 
 There is an application for viewing Como sources [Globe](https://github.com/igormironchik/globe-como)
-
-# Donate
-
-[![](bitcoin-btc-logo-full.png)](https://github.com/igormironchik)
